@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using MblexApp.Context;
+using Microsoft.Extensions.Logging;
 
 namespace MblexApp
 {
@@ -18,8 +19,10 @@ namespace MblexApp
 #if DEBUG
 		builder.Logging.AddDebug();
 #endif
-
+            // Register your services here
+        builder.Services.AddDbContext<MyDbContext>();
             return builder.Build();
-        }
+        }       
+
     }
 }

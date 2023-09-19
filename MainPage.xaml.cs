@@ -1,4 +1,8 @@
-﻿namespace MblexApp
+﻿using MblexApp.Context;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+
+namespace MblexApp
 {
     public partial class MainPage : ContentPage
     {
@@ -7,7 +11,9 @@
         public MainPage()
         {
             InitializeComponent();
+
         }
+        
 
         private void OnCounterClicked(object sender, EventArgs e)
         {

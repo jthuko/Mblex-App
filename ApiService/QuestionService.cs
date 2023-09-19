@@ -1,4 +1,6 @@
-﻿using MblexApp.Models;
+﻿using MblexApp.Context;
+using MblexApp.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +11,9 @@ namespace MblexApp.ApiService
 {
     public class QuestionService
     {
-        private readonly YourDbContext dbContext;
+        private readonly MyDbContext dbContext;
 
-        public QuestionService(YourDbContext dbContext)
+        public QuestionService(MyDbContext dbContext)
         {
             this.dbContext = dbContext;
         }
