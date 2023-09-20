@@ -1,49 +1,19 @@
-﻿
-using MblexApp.Models;
-using System.Collections.Generic;
+﻿using MblexApp.Models;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows.Input;
-
 
 namespace MblexApp.ViewModel
 {
-    public class QuestionViewModel:INotifyPropertyChanged
+    public class UserViewModel : INotifyPropertyChanged
     {
+
         private readonly QuestionService questionService;
-        public ObservableCollection<Question> PublicQuestions { get; set; }
 
-        // Event to notify the UI of property changes
-        public event PropertyChangedEventHandler PropertyChanged;           
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        private Question currentQuestion;
-        public Question CurrentQuestion
-        {
-            get { return currentQuestion; }
-            set
-            {
-                if (currentQuestion != value)
-                {
-                    currentQuestion = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        private string selectedAnswer;
-        public string SelectedAnswer
-        {
-            get { return selectedAnswer; }
-            set
-            {
-                if (selectedAnswer != value)
-                {
-                    selectedAnswer = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
+        public ObservableCollection<Question> UserQuestions { get; set; }
+        public int UserId { get; private set; }
 
         private bool isAnswerCorrect;
         public bool IsAnswerCorrect
@@ -54,22 +24,26 @@ namespace MblexApp.ViewModel
                 if (isAnswerCorrect != value)
                 {
                     isAnswerCorrect = value;
-                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(IsAnswerCorrect));
                 }
             }
         }
 
+        private void OnPropertyChanged(string v)
+        {
+            throw new NotImplementedException();
+        }
+
+        private Question currentQuestion; // Keep track of the current question
+
         public ICommand SelectAnswerCommand { get; private set; }
 
-
-        public QuestionViewModel(QuestionService questionService)
+        public UserViewModel(QuestionService questionService)
         {
             this.questionService = questionService;
-            PublicQuestions = new ObservableCollection<Question>();
-            LoadPublicQuestions();
-
+            UserQuestions = new ObservableCollection<Question>();
+            LoadUserQuestions();
             InitializeCommands();
-
         }
         private void InitializeCommands()
         {
@@ -96,7 +70,7 @@ namespace MblexApp.ViewModel
             // return PublicQuestions.FirstOrDefault(q => q.Id == selectedChoiceIndex);
 
             // For demonstration purposes, returning the first question in the list.
-            return PublicQuestions.FirstOrDefault();
+            return UserQuestions.FirstOrDefault();
         }
 
         private void CheckAnswer(Question selectedQuestion, int selectedChoiceIndex)
@@ -104,22 +78,38 @@ namespace MblexApp.ViewModel
             // Check if the selected choice is correct for the current question.
             IsAnswerCorrect = selectedQuestion.CorrectChoiceIndex == selectedChoiceIndex;
         }
-
-        private void LoadPublicQuestions()
+        private void LoadUserQuestions()
         {
-            // Load a list of all public questions.
-            PublicQuestions.Clear();
-            var publicQuestions = questionService.GetPublicQuestions();
-            foreach (var question in publicQuestions)
+            // Load questions owned by the current user.
+            UserQuestions.Clear();
+            var userQuestions = questionService.GetUserQuestions(UserId); // Replace UserId with the current user's ID.
+            foreach (var question in userQuestions)
             {
-                PublicQuestions.Add(question);
+                UserQuestions.Add(question);
             }
         }
-       
-        // Helper method to raise property change events
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+
+        public void AddQuestion(Question question)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            // Add a new question owned by the current user.
+            question.UserId = UserId; // Set the user ID for the new question.
+            questionService.AddQuestion(question);
+            LoadUserQuestions(); // Reload the user's questions.
         }
-    }   
+
+        public void UpdateQuestion(Question question)
+        {
+            // Update a question owned by the current user.
+            questionService.UpdateQuestion(question);
+            LoadUserQuestions(); // Reload the user's questions.
+        }
+
+        public void DeleteQuestion(int questionId)
+        {
+            // Delete a question owned by the current user.
+            questionService.DeleteQuestion(questionId);
+            LoadUserQuestions(); // Reload the user's questions.
+        }
+        // Other properties and methods as needed
+    }
 }

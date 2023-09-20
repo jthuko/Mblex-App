@@ -1,83 +1,75 @@
-﻿using MblexApp.Context;
-using MblexApp.Models;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MblexApp.Context;
+using MblexApp.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace MblexApp.ApiService
+public class QuestionService
 {
-    public class QuestionService
+    private readonly MyDbContext dbContext;
+
+    public QuestionService(MyDbContext dbContext)
     {
-        private readonly MyDbContext dbContext;
+        this.dbContext = dbContext;
+    }
 
-        public QuestionService(MyDbContext dbContext)
+    public List<Question> GetPublicQuestions()
+    {
+        // Replace this with your actual logic to retrieve public questions using Entity Framework.
+        return dbContext.Questions.Where(q => q.IsPublic).ToList();
+    }
+
+    public List<Question> GetUserQuestions(int userId)
+    {
+        // Replace this with your actual logic to retrieve user-specific questions using Entity Framework.
+        return dbContext.Questions.Where(q => q.UserId == userId).ToList();
+    }
+
+    public void AddQuestion(Question question)
+    {
+        // Replace this with your actual logic to add a question using Entity Framework.
+        dbContext.Questions.Add(question);
+        dbContext.SaveChanges();
+    }
+
+    public void UpdateQuestion(Question question)
+    {
+        // Replace this with your actual logic to update a question using Entity Framework.
+        dbContext.Questions.Update(question);
+        dbContext.SaveChanges();
+    }
+
+    public void PatchQuestion(int questionId, Dictionary<string, object> changes)
+    {
+        // Replace this with your actual logic to partially update a question using Entity Framework.
+        var existingQuestion = dbContext.Questions.FirstOrDefault(q => q.Id == questionId);
+        if (existingQuestion != null)
         {
-            this.dbContext = dbContext;
-        }
-
-        public async Task<List<Question>> GetQuestionsAsync()
-        {
-            return await dbContext.Questions.ToListAsync();
-        }
-
-        public async Task AddQuestionAsync(Question question)
-        {
-            dbContext.Questions.Add(question);
-            await dbContext.SaveChangesAsync();
-        }
-
-        public async Task UpdateQuestionAsync(Question question)
-        {
-            var existingQuestion = await dbContext.Questions.FindAsync(question.Id);
-
-            if (existingQuestion != null)
+            foreach (var change in changes)
             {
-                // Update the properties of the existing question.
-                existingQuestion.Text = question.Text;
-                existingQuestion.CorrectAnswer = question.CorrectAnswer;
-                // Update other properties as needed.
-
-                await dbContext.SaveChangesAsync();
-            }
-        }
-
-        public async Task PatchQuestionAsync(int questionId, Dictionary<string, object> changes)
-        {
-            var existingQuestion = await dbContext.Questions.FindAsync(questionId);
-
-            if (existingQuestion != null)
-            {
-                // Apply partial updates to the existing question.
-                foreach (var change in changes)
+                if (change.Key.Equals("Text", StringComparison.OrdinalIgnoreCase))
                 {
-                    switch (change.Key)
-                    {
-                        case "Text":
-                            existingQuestion.Text = (string)change.Value;
-                            break;
-                        case "CorrectAnswer":
-                            existingQuestion.CorrectAnswer = (string)change.Value;
-                            break;
-                            // Add cases for other properties as needed.
-                    }
+                    existingQuestion.Text = change.Value.ToString();
                 }
-
-                await dbContext.SaveChangesAsync();
+                else if (change.Key.Equals("IsPublic", StringComparison.OrdinalIgnoreCase))
+                {
+                    existingQuestion.IsPublic = (bool)change.Value;
+                }
+                // Add more properties to update as needed
             }
+            dbContext.SaveChanges();
         }
+    }
 
-        public async Task DeleteQuestionAsync(int questionId)
+    public void DeleteQuestion(int questionId)
+    {
+        // Replace this with your actual logic to delete a question using Entity Framework.
+        var questionToDelete = dbContext.Questions.FirstOrDefault(q => q.Id == questionId);
+        if (questionToDelete != null)
         {
-            var questionToDelete = await dbContext.Questions.FindAsync(questionId);
-
-            if (questionToDelete != null)
-            {
-                dbContext.Questions.Remove(questionToDelete);
-                await dbContext.SaveChangesAsync();
-            }
+            dbContext.Questions.Remove(questionToDelete);
+            dbContext.SaveChanges();
         }
     }
 }
