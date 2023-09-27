@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MblexApp.HomePage"
+             >
+    <NavigationPage.TitleView>
+        <Label x:Name="pageTitleView"
+               HorizontalTextAlignment="Center"
+               VerticalTextAlignment="Center"
+               VerticalOptions="CenterAndExpand"
+               HorizontalOptions="CenterAndExpand"
+               FontSize="Medium"
+               TextColor="White"
+               FontAttributes="Bold"
+               FontAutoScalingEnabled="True"
+               Text="Home"/>
+    </NavigationPage.TitleView>
+    <ContentPage.Content>
+        <StackLayout>
+            <!-- Question List -->
+            <ListView x:Name="QuestionsListView"
+                      ItemsSource="{Binding PublicQuestions}"
+                      ItemSelected="OnQuestionSelected">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Padding="10">
+                                <Label Text="{Binding Text}" />
+                                <ListView x:Name="ChoicesListView"
+                                          ItemsSource="{Binding Choices}"
+                                          IsEnabled="{Binding IsAnswered, Converter={StaticResource BoolToInverseBoolConverter}}"
+                                          ItemTapped="OnChoiceSelected">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <ViewCell>
+                                                <Label Text="{Binding}" />
+                                            </ViewCell>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                                <Label Text="Correct Answer:"
+                                       IsVisible="{Binding IsAnswered}"
+                                       TextColor="Green"
+                                       FontAttributes="Bold"
+                                       FontSize="Medium">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label" Binding="{Binding IsCorrectAnswer}" Value="True">
+                                            <Setter Property="TextColor" Value="Green"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Label" Binding="{Binding IsCorrectAnswer}" Value="False">
+                                            <Setter Property="TextColor" Value="Red"/>
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

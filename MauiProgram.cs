@@ -19,8 +19,6 @@ namespace MblexApp
 #if DEBUG
 		builder.Logging.AddDebug();
 #endif
-            // Register your services here
-        builder.Services.AddDbContext<MyDbContext>();
             return builder.Build();
         }       
 

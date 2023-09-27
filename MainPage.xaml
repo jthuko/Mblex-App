@@ -30,8 +30,8 @@
 
             <Button
                 x:Name="CounterBtn"
-                Text="Click me"
-                SemanticProperties.Hint="Counts the number of times you click"
+                Text="Enter"
+                SemanticProperties.Hint="Navigates to Home Page"
                 Clicked="OnCounterClicked"
                 HorizontalOptions="Center" />
 
