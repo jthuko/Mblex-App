@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MblexApp.HomePage"
-             >
+             xmlns:local="clr-namespace:MblexApp"
+             x:Class="MblexApp.HomePage">
+    <ContentPage.Resources>
+        <local:BoolToInverseBoolConverter x:Key="BoolToInverseBoolConverter" />
+        <local:IndexToBooleanConverter x:Key="IndexToBooleanConverter" />
+    </ContentPage.Resources>
     <NavigationPage.TitleView>
         <Label x:Name="pageTitleView"
                HorizontalTextAlignment="Center"
@@ -17,27 +21,20 @@
     </NavigationPage.TitleView>
     <ContentPage.Content>
         <StackLayout>
-            <!-- Question List -->
             <ListView x:Name="QuestionsListView"
                       ItemsSource="{Binding PublicQuestions}"
-                      ItemSelected="OnQuestionSelected">
+                      ItemSelected="OnQuestionSelected" HasUnevenRows="True">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
                             <StackLayout Padding="10">
-                                <Label Text="{Binding Text}" />
-                                <ListView x:Name="ChoicesListView"
-                                          ItemsSource="{Binding Choices}"
-                                          IsEnabled="{Binding IsAnswered, Converter={StaticResource BoolToInverseBoolConverter}}"
-                                          ItemTapped="OnChoiceSelected">
-                                    <ListView.ItemTemplate>
-                                        <DataTemplate>
-                                            <ViewCell>
-                                                <Label Text="{Binding}" />
-                                            </ViewCell>
-                                        </DataTemplate>
-                                    </ListView.ItemTemplate>
-                                </ListView>
+                                <StackLayout x:Name="ChoicesRadioButtonGroup" RadioButtonGroup.GroupName="Choices">
+                                    <Label Text="{Binding Text}" />
+                                    <RadioButton Content="{Binding Choices[0]}" IsChecked="{Binding IsChoiceSelected, Converter={StaticResource IndexToBooleanConverter}, ConverterParameter=0}" />
+                                    <RadioButton Content="{Binding Choices[1]}" IsChecked="{Binding IsChoiceSelected, Converter={StaticResource IndexToBooleanConverter}, ConverterParameter=1}" />
+                                    <RadioButton Content="{Binding Choices[2]}" IsChecked="{Binding IsChoiceSelected, Converter={StaticResource IndexToBooleanConverter}, ConverterParameter=2}" />
+                                    <RadioButton Content="{Binding Choices[3]}" IsChecked="{Binding IsChoiceSelected, Converter={StaticResource IndexToBooleanConverter}, ConverterParameter=3}" />
+                                </StackLayout>
                                 <Label Text="Correct Answer:"
                                        IsVisible="{Binding IsAnswered}"
                                        TextColor="Green"

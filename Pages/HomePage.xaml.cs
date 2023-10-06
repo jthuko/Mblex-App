@@ -23,18 +23,6 @@ public partial class HomePage : ContentPage
             selectedQuestion.IsAnswered = !selectedQuestion.IsAnswered;
             QuestionsListView.SelectedItem = null; // Deselect the item
         }
-    }
-
-    private void OnChoiceSelected(object sender, ItemTappedEventArgs e)
-    {
-        if (e.Item is string selectedChoice)
-        {
-            var viewModel = (QuestionViewModel)BindingContext;
-            var selectedQuestion = viewModel.PublicQuestions[viewModel.PublicQuestions.IndexOf(viewModel.CurrentQuestion)];
-            int selectedChoiceIndex = selectedQuestion.Choices.IndexOf(selectedChoice);
-            viewModel.SelectAnswerCommand.Execute(selectedChoiceIndex);
-            viewModel.CurrentQuestion.IsAnswered = true;
-        }
-    }
+    } 
 }
 

@@ -16,12 +16,34 @@ public class QuestionService
 
     public List<Question> GetPublicQuestions()
     {
+		// Create a list of dummy multiple-choice questions
+		var dummyQuestions = new List<Question>
+		{
+			new Question(
+			    text: "What is the capital of France?",
+			    choices: new List<string> { "A. London", "B. Paris", "C. Berlin", "D. Rome" },
+			    correctChoiceIndex: 1
+		    ),
+		    new Question(
+			    text: "Which planet is known as the Red Planet?",
+			    choices: new List<string> { "A. Earth", "B. Mars", "C. Jupiter", "D. Venus" },
+			    correctChoiceIndex: 1
+		    ),
+		    new Question(
+			    text: "What is the largest mammal on Earth?",
+			    choices: new List<string> { "A. Elephant", "B. Blue Whale", "C. Giraffe", "D. Lion" },
+			    correctChoiceIndex: 1
+		    ),
+        // Add more dummy questions here...
+        };
+        return dummyQuestions;
         // Replace this with your actual logic to retrieve public questions using Entity Framework.
-        return dbContext.Questions.Where(q => q.IsPublic).ToList();
+       // return dbContext.Questions.Where(q => q.IsPublic).ToList();
     }
 
     public List<Question> GetUserQuestions(int userId)
     {
+
         // Replace this with your actual logic to retrieve user-specific questions using Entity Framework.
         return dbContext.Questions.Where(q => q.UserId == userId).ToList();
     }
