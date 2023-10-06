@@ -11,35 +11,29 @@ namespace MblexApp.ViewModel
 {
     public class QuestionViewModel:INotifyPropertyChanged
     {
-        private readonly QuestionService questionService;
-        public ObservableCollection<Question> PublicQuestions { get; set; }
-
-        // Event to notify the UI of property changes
-        public event PropertyChangedEventHandler PropertyChanged;           
-
-        private Question currentQuestion;
-        public Question CurrentQuestion
+        private ObservableCollection<Question> publicQuestions;
+        public ObservableCollection<Question> PublicQuestions
         {
-            get { return currentQuestion; }
+            get { return publicQuestions; }
             set
             {
-                if (currentQuestion != value)
+                if (publicQuestions != value)
                 {
-                    currentQuestion = value;
+                    publicQuestions = value;
                     OnPropertyChanged();
                 }
             }
         }
 
-        private string selectedAnswer;
-        public string SelectedAnswer
+        private List<string> choices;
+        public List<string> Choices
         {
-            get { return selectedAnswer; }
+            get { return choices; }
             set
             {
-                if (selectedAnswer != value)
+                if (choices != value)
                 {
-                    selectedAnswer = value;
+                    choices = value;
                     OnPropertyChanged();
                 }
             }
@@ -61,16 +55,17 @@ namespace MblexApp.ViewModel
 
         public ICommand SelectAnswerCommand { get; private set; }
 
+        private readonly QuestionService questionService;
 
         public QuestionViewModel(QuestionService questionService)
         {
             this.questionService = questionService;
             PublicQuestions = new ObservableCollection<Question>();
+            Choices = new List<string>(); // Initialize choices
             LoadPublicQuestions();
-
             InitializeCommands();
-
         }
+
         private void InitializeCommands()
         {
             SelectAnswerCommand = new Command<int>(selectedChoiceIndex =>
@@ -86,38 +81,48 @@ namespace MblexApp.ViewModel
             });
         }
 
-        // Implement the logic to obtain the current question based on the selectedChoiceIndex
-        private Question GetCurrentQuestion(int selectedChoiceIndex)
-        {
-            // Replace this with your actual logic to obtain the current question.
-            // You might use the selectedChoiceIndex or other criteria to determine the current question.
-            // Return the appropriate Question object or null if the current question is not found.
-            // Example: 
-            // return PublicQuestions.FirstOrDefault(q => q.Id == selectedChoiceIndex);
-
-            // For demonstration purposes, returning the first question in the list.
-            return PublicQuestions.FirstOrDefault();
-        }
-
-        private void CheckAnswer(Question selectedQuestion, int selectedChoiceIndex)
-        {
-            // Check if the selected choice is correct for the current question.
-            IsAnswerCorrect = selectedQuestion.CorrectChoiceIndex == selectedChoiceIndex;
-        }
-
         private void LoadPublicQuestions()
         {
-            // Load a list of all public questions.
+            // Retrieve public questions from the QuestionService
             PublicQuestions.Clear();
-            var publicQuestions = questionService.GetPublicQuestions();
+            List<Question> publicQuestions = questionService.GetPublicQuestions();
             foreach (var question in publicQuestions)
             {
                 PublicQuestions.Add(question);
             }
         }
-       
-        // Helper method to raise property change events
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+
+        private Question GetCurrentQuestion(int selectedChoiceIndex)
+        {
+            // Implement your logic to get the current question here
+            // For example, you can use the selectedChoiceIndex to find the current question
+            if (selectedChoiceIndex >= 0 && selectedChoiceIndex < PublicQuestions.Count)
+            {
+                return PublicQuestions[selectedChoiceIndex];
+            }
+            return null;
+        }
+
+        private void CheckAnswer(Question question, int selectedChoiceIndex)
+        {
+            if (question.CorrectChoiceIndex == selectedChoiceIndex)
+            {
+                // The answer is correct
+                question.IsCorrectAnswer = true;
+            }
+            else
+            {
+                // The answer is incorrect
+                question.IsCorrectAnswer = false;
+            }
+
+            // Mark the question as answered
+            question.IsAnswered = true;
+        }
+
+        // Implement INotifyPropertyChanged interface for property change notification
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
