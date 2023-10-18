@@ -12,7 +12,7 @@ namespace MblexApp.Models
         public string Text { get; set; }
         public List<string> Choices { get; set; }
         public int CorrectChoiceIndex { get; set; }
-        public string CorrectAnswer { get; internal set; }
+        public string CorrectAnswer { get; set; }
         public bool IsAnswered { get; set; }
         public bool IsCorrectAnswer { get; set; }
 
@@ -26,12 +26,13 @@ namespace MblexApp.Models
 
         // Indicates whether the question is public or private
         public bool IsPublic { get; set; }
-        public Question(string text, List<string> choices, int correctChoiceIndex)
+        public Question(string text, List<string> choices, string correctAnswer, int correctChoiceIndex)
         {
             Text = text;
             Choices = choices;
-            CorrectChoiceIndex = correctChoiceIndex;
+            CorrectAnswer = correctAnswer;
             IsAnswered = false;
+            CorrectChoiceIndex = correctChoiceIndex;
         }
     }
 }

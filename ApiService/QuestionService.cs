@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using MblexApp.Context;
 using MblexApp.Models;
@@ -14,26 +15,29 @@ public class QuestionService
         this.dbContext = dbContext;
     }
 
-    public List<Question> GetPublicQuestions()
+    public ObservableCollection<Question> GetPublicQuestions()
     {
 		// Create a list of dummy multiple-choice questions
-		var dummyQuestions = new List<Question>
+		var dummyQuestions = new ObservableCollection<Question>
 		{
 			new Question(
 			    text: "What is the capital of France?",
 			    choices: new List<string> { "A. London", "B. Paris", "C. Berlin", "D. Rome" },
-			    correctChoiceIndex: 1
-		    ),
+			    correctAnswer : "A. London",
+                correctChoiceIndex: 1
+            ),
 		    new Question(
 			    text: "Which planet is known as the Red Planet?",
 			    choices: new List<string> { "A. Earth", "B. Mars", "C. Jupiter", "D. Venus" },
-			    correctChoiceIndex: 1
-		    ),
+			    correctAnswer: "A. Earth",
+                correctChoiceIndex: 1
+            ),
 		    new Question(
 			    text: "What is the largest mammal on Earth?",
 			    choices: new List<string> { "A. Elephant", "B. Blue Whale", "C. Giraffe", "D. Lion" },
-			    correctChoiceIndex: 1
-		    ),
+			    correctAnswer:"A. Elephant",
+                correctChoiceIndex: 1
+            ),
         // Add more dummy questions here...
         };
         return dummyQuestions;

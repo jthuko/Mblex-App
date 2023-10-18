@@ -23,6 +23,8 @@ public partial class HomePage : ContentPage
             selectedQuestion.IsAnswered = !selectedQuestion.IsAnswered;
             QuestionsListView.SelectedItem = null; // Deselect the item
         }
-    } 
+    }
+
+  
 }
 
