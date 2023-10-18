@@ -21,39 +21,24 @@
     </NavigationPage.TitleView>
     <ContentPage.Content>
         <StackLayout>
-            <ListView x:Name="QuestionsListView"
+            <CollectionView x:Name="QuestionsListView"
                       ItemsSource="{Binding PublicQuestions}"
-                      ItemSelected="OnQuestionSelected" HasUnevenRows="True">
-                <ListView.ItemTemplate>
+                      SelectionMode="Single"
+                      SelectedItem="SelectedItem ">
+                <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell>
-                            <StackLayout Padding="10">
-                                <StackLayout x:Name="ChoicesRadioButtonGroup" RadioButtonGroup.GroupName="Choices">
-                                    <Label Text="{Binding Text}" />
-                                    <RadioButton Content="{Binding Choices[0]}" IsChecked="{Binding IsChoiceSelected, Converter={StaticResource IndexToBooleanConverter}, ConverterParameter=0}" />
-                                    <RadioButton Content="{Binding Choices[1]}" IsChecked="{Binding IsChoiceSelected, Converter={StaticResource IndexToBooleanConverter}, ConverterParameter=1}" />
-                                    <RadioButton Content="{Binding Choices[2]}" IsChecked="{Binding IsChoiceSelected, Converter={StaticResource IndexToBooleanConverter}, ConverterParameter=2}" />
-                                    <RadioButton Content="{Binding Choices[3]}" IsChecked="{Binding IsChoiceSelected, Converter={StaticResource IndexToBooleanConverter}, ConverterParameter=3}" />
-                                </StackLayout>
-                                <Label Text="Correct Answer:"
-                                       IsVisible="{Binding IsAnswered}"
-                                       TextColor="Green"
-                                       FontAttributes="Bold"
-                                       FontSize="Medium">
-                                    <Label.Triggers>
-                                        <DataTrigger TargetType="Label" Binding="{Binding IsCorrectAnswer}" Value="True">
-                                            <Setter Property="TextColor" Value="Green"/>
-                                        </DataTrigger>
-                                        <DataTrigger TargetType="Label" Binding="{Binding IsCorrectAnswer}" Value="False">
-                                            <Setter Property="TextColor" Value="Red"/>
-                                        </DataTrigger>
-                                    </Label.Triggers>
-                                </Label>
+                        <StackLayout Padding="10">
+                            <StackLayout>
+                                <Label Text="{Binding Text}" TextColor="{Binding IsCorrectAnswer, Converter={StaticResource CorrectAnswerToColorConverter}}" />
+                                <Label Text="{Binding Choices[0]}" TextColor="{Binding Choices[0], Converter={StaticResource ChoiceToColorConverter}}" />
+                                <Label Text="{Binding Choices[1]}" TextColor="{Binding Choices[1], Converter={StaticResource ChoiceToColorConverter}}" />
+                                <Label Text="{Binding Choices[2]}" TextColor="{Binding Choices[2], Converter={StaticResource ChoiceToColorConverter}}" />
+                                <Label Text="{Binding Choices[3]}" TextColor="{Binding Choices[3], Converter={StaticResource ChoiceToColorConverter}}" />
                             </StackLayout>
-                        </ViewCell>
+                        </StackLayout>
                     </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

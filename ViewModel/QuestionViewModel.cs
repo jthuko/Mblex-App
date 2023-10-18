@@ -39,6 +39,20 @@ namespace MblexApp.ViewModel
             }
         }
 
+        
+        private string _selectedValue;
+        public string SelectedValue
+        {
+            get { return _selectedValue; }
+            set
+            {
+                if (_selectedValue != value)
+                {
+                    _selectedValue = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
         private bool isAnswerCorrect;
         public bool IsAnswerCorrect
         {
@@ -67,48 +81,33 @@ namespace MblexApp.ViewModel
         }
 
         private void InitializeCommands()
-        {
-            SelectAnswerCommand = new Command<int>(selectedChoiceIndex =>
-            {
+        {            
                 // Implement your logic to obtain the current question here
                 // For example, you can use the index of the selected question
-                Question selectedQuestion = GetCurrentQuestion(selectedChoiceIndex);
-
-                if (selectedQuestion != null)
-                {
-                    CheckAnswer(selectedQuestion, selectedChoiceIndex);
-                }
-            });
+               
+                          
         }
 
         private void LoadPublicQuestions()
         {
             // Retrieve public questions from the QuestionService
             PublicQuestions.Clear();
-            List<Question> publicQuestions = questionService.GetPublicQuestions();
+            ObservableCollection<Question> publicQuestions = questionService.GetPublicQuestions();
             foreach (var question in publicQuestions)
             {
                 PublicQuestions.Add(question);
             }
         }
 
-        private Question GetCurrentQuestion(int selectedChoiceIndex)
-        {
-            // Implement your logic to get the current question here
-            // For example, you can use the selectedChoiceIndex to find the current question
-            if (selectedChoiceIndex >= 0 && selectedChoiceIndex < PublicQuestions.Count)
-            {
-                return PublicQuestions[selectedChoiceIndex];
-            }
-            return null;
-        }
+       
 
-        private void CheckAnswer(Question question, int selectedChoiceIndex)
+        private void CheckAnswer(Question question, string selectedValue)
         {
-            if (question.CorrectChoiceIndex == selectedChoiceIndex)
+            if (question.CorrectAnswer == selectedValue)
             {
                 // The answer is correct
                 question.IsCorrectAnswer = true;
+                
             }
             else
             {

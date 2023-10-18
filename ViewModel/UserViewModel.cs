@@ -34,7 +34,7 @@ namespace MblexApp.ViewModel
             throw new NotImplementedException();
         }
 
-        private Question currentQuestion; // Keep track of the current question
+        private Question    currentQuestion; // Keep track of the current question
 
         public ICommand SelectAnswerCommand { get; private set; }
 
