@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MblexApp.Converter
+namespace MblexApp
 {
     class CorrectAnswerToColorConverter:IValueConverter
     {

@@ -6,6 +6,8 @@
     <ContentPage.Resources>
         <local:BoolToInverseBoolConverter x:Key="BoolToInverseBoolConverter" />
         <local:IndexToBooleanConverter x:Key="IndexToBooleanConverter" />
+        <local:ChoiceToColorConverter x:Key="ChoiceToColorConverter"/>
+        <local:CorrectAnswerToColorConverter x:Key="CorrectAnswerToColorConverter"/>
     </ContentPage.Resources>
     <NavigationPage.TitleView>
         <Label x:Name="pageTitleView"
@@ -24,17 +26,17 @@
             <CollectionView x:Name="QuestionsListView"
                       ItemsSource="{Binding PublicQuestions}"
                       SelectionMode="Single"
-                      SelectedItem="SelectedItem ">
+                      >
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout Padding="10">
-                            <StackLayout>
+                            <StackLayout RadioButtonGroup.SelectedValue="{Binding SelectedValue}">
                                 <Label Text="{Binding Text}" TextColor="{Binding IsCorrectAnswer, Converter={StaticResource CorrectAnswerToColorConverter}}" />
-                                <Label Text="{Binding Choices[0]}" TextColor="{Binding Choices[0], Converter={StaticResource ChoiceToColorConverter}}" />
-                                <Label Text="{Binding Choices[1]}" TextColor="{Binding Choices[1], Converter={StaticResource ChoiceToColorConverter}}" />
-                                <Label Text="{Binding Choices[2]}" TextColor="{Binding Choices[2], Converter={StaticResource ChoiceToColorConverter}}" />
-                                <Label Text="{Binding Choices[3]}" TextColor="{Binding Choices[3], Converter={StaticResource ChoiceToColorConverter}}" />
-                            </StackLayout>
+                                <RadioButton Content="{Binding Choices[0]}"  Value="{Binding Choices[0]}" CheckedChanged="RadioButton_CheckedChanged"/>
+                                <RadioButton Content="{Binding Choices[1]}" Value="{Binding Choices[1]}" CheckedChanged="RadioButton_CheckedChanged"/>
+                                <RadioButton Content="{Binding Choices[2]}" Value="{Binding Choices[2]}" CheckedChanged="RadioButton_CheckedChanged"/>
+                                <RadioButton Content="{Binding Choices[3]}" Value="{Binding Choices[3]}" CheckedChanged="RadioButton_CheckedChanged"/>
+                            </StackLayout> 
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
