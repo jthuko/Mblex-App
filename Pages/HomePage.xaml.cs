@@ -8,23 +8,29 @@ public partial class HomePage : ContentPage
     private readonly MyDbContext dbContext;
     private readonly QuestionViewModel viewModel;
     public HomePage()
-	{
-		InitializeComponent();
+    {
+        InitializeComponent();
 
         // Resolve dependencies using DependencyService
         dbContext = DependencyService.Get<MyDbContext>();
         viewModel = new QuestionViewModel(new QuestionService(dbContext));
         BindingContext = viewModel;
     }
-    private void OnQuestionSelected(object sender, SelectedItemChangedEventArgs e)
-    {
-        if (e.SelectedItem is Question selectedQuestion)
-        {
-            selectedQuestion.IsAnswered = !selectedQuestion.IsAnswered;
-            QuestionsListView.SelectedItem = null; // Deselect the item
-        }
-    }
 
-  
+    private void RadioButton_CheckedChanged(object sender, CheckedChangedEventArgs e)
+    {
+        if (sender is RadioButton radioButton && e.Value)
+        {//
+            string selectedValue = (string)radioButton.Value;
+            // Now, 'selectedValue' contains the text of the checked radio button
+            Question selectedDataObject = radioButton.BindingContext as Question;
+
+            if (selectedDataObject != null)
+            {
+                // 'selectedDataObject' contains the data object bound to the checked radio button
+            }
+        }
+
+    }
 }
 

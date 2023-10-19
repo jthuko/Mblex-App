@@ -43,7 +43,7 @@ namespace MblexApp.ViewModel
         private string _selectedValue;
         public string SelectedValue
         {
-            get { return _selectedValue; }
+            get { return _selectedValue;}
             set
             {
                 if (_selectedValue != value)
