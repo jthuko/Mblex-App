@@ -22,10 +22,10 @@
                Text="Home"/>
     </NavigationPage.TitleView>
     <ContentPage.Content>
-        <StackLayout>
+       
             <CollectionView x:Name="QuestionsListView"
                       ItemsSource="{Binding PublicQuestions}"
-                      SelectionMode="Single"
+                      SelectionMode="None"
                       >
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
@@ -41,6 +41,6 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-        </StackLayout>
+      
     </ContentPage.Content>
 </ContentPage>

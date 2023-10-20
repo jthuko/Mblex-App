@@ -16,8 +16,9 @@ namespace MblexApp
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
+            builder.Services.AddDbContext<MyDbContext>();
 #if DEBUG
-		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
             return builder.Build();
         }       
