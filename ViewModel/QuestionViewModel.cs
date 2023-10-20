@@ -84,8 +84,7 @@ namespace MblexApp.ViewModel
         {            
                 // Implement your logic to obtain the current question here
                 // For example, you can use the index of the selected question
-               
-                          
+                                         
         }
 
         private void LoadPublicQuestions()

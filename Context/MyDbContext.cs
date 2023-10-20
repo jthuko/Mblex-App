@@ -12,17 +12,19 @@ namespace MblexApp.Context
     {
         public DbSet<Question> Questions { get; set; }
 
-        public MyDbContext(DbContextOptions<MyDbContext> options)
-            : base(options)
+       
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            // Use the connection string from your Azure SQL server
+            optionsBuilder.UseSqlServer("Server=tcp:jtappserver.database.windows.net,1433;Initial Catalog=MblexDB;Persist Security Info=False;User ID=jthuko;Password=Jnzusyo77!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Define any additional configuration for your entities here
-            modelBuilder.Entity<Question>()
-                .HasKey(q => q.Id);
-            // You can configure other entity properties, relationships, etc. here
+            // Define your model configuration here
         }
+
+       
     }
 }

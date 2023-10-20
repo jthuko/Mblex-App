@@ -17,7 +17,7 @@ namespace MblexApp.Models
         public bool IsCorrectAnswer { get; set; }
 
         // Reference to the owning user
-        public int UserId { get; set; }
+        public int? UserID { get; set; }
         public UserModel User { get; set; }
 
         // Reference to the subject (assuming it's defined elsewhere)
@@ -26,13 +26,16 @@ namespace MblexApp.Models
 
         // Indicates whether the question is public or private
         public bool IsPublic { get; set; }
-        public Question(string text, List<string> choices, string correctAnswer, int correctChoiceIndex)
+        public Question(string text, List<string> choices, string correctAnswer, int correctChoiceIndex,int? userID,bool isPublic,int subjectID)
         {
             Text = text;
             Choices = choices;
             CorrectAnswer = correctAnswer;
             IsAnswered = false;
             CorrectChoiceIndex = correctChoiceIndex;
+            IsPublic = isPublic;
+            UserID = userID;
+            SubjectId = subjectID;
         }
     }
 }

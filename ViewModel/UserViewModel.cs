@@ -92,7 +92,7 @@ namespace MblexApp.ViewModel
         public void AddQuestion(Question question)
         {
             // Add a new question owned by the current user.
-            question.UserId = UserId; // Set the user ID for the new question.
+            question.UserID = UserId; // Set the user ID for the new question.
             questionService.AddQuestion(question);
             LoadUserQuestions(); // Reload the user's questions.
         }
