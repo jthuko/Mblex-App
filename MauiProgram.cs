@@ -1,4 +1,4 @@
-﻿using MblexApp.Context;
+﻿
 using Microsoft.Extensions.Logging;
 
 namespace MblexApp
@@ -16,7 +16,6 @@ namespace MblexApp
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-            builder.Services.AddDbContext<MyDbContext>();
 #if DEBUG
             builder.Logging.AddDebug();
 #endif

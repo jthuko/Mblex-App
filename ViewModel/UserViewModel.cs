@@ -12,7 +12,7 @@ namespace MblexApp.ViewModel
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ObservableCollection<Question> UserQuestions { get; set; }
+        public ObservableCollection<UserQuestion> UserQuestions { get; set; }
         public int UserId { get; private set; }
 
         private bool isAnswerCorrect;
@@ -34,34 +34,21 @@ namespace MblexApp.ViewModel
             throw new NotImplementedException();
         }
 
-        private Question    currentQuestion; // Keep track of the current question
+        private UserQuestion  currentQuestion; // Keep track of the current question
 
         public ICommand SelectAnswerCommand { get; private set; }
 
         public UserViewModel(QuestionService questionService)
         {
             this.questionService = questionService;
-            UserQuestions = new ObservableCollection<Question>();
-            LoadUserQuestions();
-            InitializeCommands();
+            UserQuestions = new ObservableCollection<UserQuestion>();
+          //  LoadUserQuestions();
+           
         }
-        private void InitializeCommands()
-        {
-            SelectAnswerCommand = new Command<int>(selectedChoiceIndex =>
-            {
-                // Implement your logic to obtain the current question here
-                // For example, you can use the index of the selected question
-                Question selectedQuestion = GetCurrentQuestion(selectedChoiceIndex);
-
-                if (selectedQuestion != null)
-                {
-                    CheckAnswer(selectedQuestion, selectedChoiceIndex);
-                }
-            });
-        }
+       
 
         // Implement the logic to obtain the current question based on the selectedChoiceIndex
-        private Question GetCurrentQuestion(int selectedChoiceIndex)
+        private UserQuestion GetCurrentQuestion(int selectedChoiceIndex)
         {
             // Replace this with your actual logic to obtain the current question.
             // You might use the selectedChoiceIndex or other criteria to determine the current question.
@@ -72,21 +59,17 @@ namespace MblexApp.ViewModel
             // For demonstration purposes, returning the first question in the list.
             return UserQuestions.FirstOrDefault();
         }
-
-        private void CheckAnswer(Question selectedQuestion, int selectedChoiceIndex)
-        {
-            // Check if the selected choice is correct for the current question.
-            IsAnswerCorrect = selectedQuestion.CorrectChoiceIndex == selectedChoiceIndex;
-        }
+       
+        /*
         private void LoadUserQuestions()
         {
             // Load questions owned by the current user.
             UserQuestions.Clear();
-            var userQuestions = questionService.GetUserQuestions(UserId); // Replace UserId with the current user's ID.
-            foreach (var question in userQuestions)
-            {
-                UserQuestions.Add(question);
-            }
+           // var userQuestions = questionService.GetUserQuestions(UserId); // Replace UserId with the current user's ID.
+          //  foreach (var question in userQuestions)
+          //  {
+          //      UserQuestions.Add(question);
+           }
         }
 
         public void AddQuestion(Question question)
@@ -111,5 +94,6 @@ namespace MblexApp.ViewModel
             LoadUserQuestions(); // Reload the user's questions.
         }
         // Other properties and methods as needed
+        */
     }
 }

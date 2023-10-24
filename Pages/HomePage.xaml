@@ -22,25 +22,31 @@
                Text="Home"/>
     </NavigationPage.TitleView>
     <ContentPage.Content>
-       
-            <CollectionView x:Name="QuestionsListView"
-                      ItemsSource="{Binding PublicQuestions}"
-                      SelectionMode="None"
-                      >
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <StackLayout Padding="10">
-                            <StackLayout RadioButtonGroup.SelectedValue="{Binding SelectedValue}">
-                                <Label Text="{Binding Text}" TextColor="{Binding IsCorrectAnswer, Converter={StaticResource CorrectAnswerToColorConverter}}" />
-                                <RadioButton Content="{Binding Choices[0]}"  Value="{Binding Choices[0]}" CheckedChanged="RadioButton_CheckedChanged"/>
-                                <RadioButton Content="{Binding Choices[1]}" Value="{Binding Choices[1]}" CheckedChanged="RadioButton_CheckedChanged"/>
-                                <RadioButton Content="{Binding Choices[2]}" Value="{Binding Choices[2]}" CheckedChanged="RadioButton_CheckedChanged"/>
-                                <RadioButton Content="{Binding Choices[3]}" Value="{Binding Choices[3]}" CheckedChanged="RadioButton_CheckedChanged"/>
-                            </StackLayout> 
-                        </StackLayout>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-      
+        <CollectionView x:Name="QuestionsListView" ItemsSource="{Binding PublicQuestions}" SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Padding="10">
+                        <Label Text="{Binding Text}" TextColor="Orange" />
+                        <RadioButton Content="{Binding Choices[0].ChoiceText}" Value="{Binding Choices[0].ChoiceText}" CheckedChanged="RadioButton_CheckedChanged" />
+                        <RadioButton Content="{Binding Choices[1].ChoiceText}" Value="{Binding Choices[1].ChoiceText}" CheckedChanged="RadioButton_CheckedChanged" />
+                        <RadioButton Content="{Binding Choices[2].ChoiceText}" Value="{Binding Choices[2].ChoiceText}" CheckedChanged="RadioButton_CheckedChanged" />
+                        <RadioButton Content="{Binding Choices[3].ChoiceText}" Value="{Binding Choices[3].ChoiceText}" CheckedChanged="RadioButton_CheckedChanged" />
+                        <Label Text="Answer">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label" Binding="{Binding IsCorrectAnswer}" Value="True">
+                                    <Setter Property="TextColor" Value="Green" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Label" Binding="{Binding IsCorrectAnswer}" Value="False">
+                                    <Setter Property="TextColor" Value="Red" />
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+
+
     </ContentPage.Content>
 </ContentPage>

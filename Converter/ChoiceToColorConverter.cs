@@ -15,10 +15,10 @@ namespace MblexApp
             if (value is string choice)
             {
                 // Check if the choice matches the correct answer
-                var question = (Question)parameter;
-                bool isCorrectChoice = question.CorrectAnswer == choice;
+              //  var question = (PublicQuestion)parameter;
+               // bool isCorrectChoice = question.Choices. == choice;
 
-                return isCorrectChoice ? Color.FromRgba(0, 128, 0, 255) : Color.FromRgba(255, 0, 0, 255); // Green and Red in ARGB
+              //  return isCorrectChoice ? Color.FromRgba(0, 128, 0, 255) : Color.FromRgba(255, 0, 0, 255); // Green and Red in ARGB
             }
 
             return Color.FromRgba(0, 0, 0, 255);

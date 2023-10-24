@@ -1,332 +1,277 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data;
 using System.Linq;
-using MblexApp.Context;
+using System.Text.Json;
+
 using MblexApp.Models;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 public class QuestionService
-{
-    private readonly MyDbContext dbContext;
+ { 
+    private readonly string connectionString = "Server=tcp:jtappserver.database.windows.net,1433;Initial Catalog=MblexDB;Persist Security Info=False;User ID=jthuko;Password=Jnzusyo77!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
-    public QuestionService(MyDbContext dbContext)
+    public QuestionService(string connectionString)
     {
-        this.dbContext = dbContext;
+        this.connectionString = connectionString;
     }
 
-    public ObservableCollection<Question> GetPublicQuestions()
+    public async Task<ObservableCollection<PublicQuestion>> GetPublicQuestionsAsync()
     {
-        // Create a list of dummy multiple-choice questions
-        var dummyQuestions = new ObservableCollection<Question>
+        List<PublicQuestion> publicQuestions = new List<PublicQuestion>();
+
+        using (SqlConnection connection = new SqlConnection(connectionString))
         {
-            new Question(
-    text: "What is the scientific study of human movement and body mechanics?",
-    choices: new List<string> { "A. Physiology", "B. Kinesiology", "C. Psychology", "D. Anthropology" },
-    correctAnswer: "B. Kinesiology",
-    correctChoiceIndex: 1,
-    isPublic: true,
-    userID: null,
-    subjectID: 1
-),
+            connection.Open();
 
-new Question(
-    text: "Which of the following is NOT a type of muscle contraction?",
-    choices: new List<string> { "A. Isometric", "B. Concentric", "C. Eccentric", "D. Intrinsic" },
-    correctAnswer: "D. Intrinsic",
-    correctChoiceIndex: 3,
-    isPublic: true,
-    userID: null,
-    subjectID: 1
-),
+            string questionQuery = "SELECT * FROM PublicQuestions";
 
-new Question(
-    text: "What is the term for the point at which a muscle is attached to a bone that does not move during a muscle contraction?",
-    choices: new List<string> { "A. Origin", "B. Insertion", "C. Belly", "D. Tendon" },
-    correctAnswer: "A. Origin",
-    correctChoiceIndex: 0,
-    isPublic: true,
-    userID: null,
-    subjectID: 1
-),
+            using (SqlCommand questionCommand = new SqlCommand(questionQuery, connection))
+            using (SqlDataReader questionReader = await questionCommand.ExecuteReaderAsync())
+            {
+                while (await questionReader.ReadAsync())
+                {
+                    PublicQuestion question = new PublicQuestion
+                    {
+                        QuestionID = questionReader.GetInt32(questionReader.GetOrdinal("QuestionID")),
+                        Text = questionReader.GetString(questionReader.GetOrdinal("Text")),
+                        IsPublic = questionReader.GetBoolean(questionReader.GetOrdinal("IsPublic")),
+                        UserID = questionReader.IsDBNull(questionReader.GetOrdinal("UserID")) ? (int?)null : questionReader.GetInt32(questionReader.GetOrdinal("UserID")),
+                        SubjectID = questionReader.GetInt32(questionReader.GetOrdinal("SubjectID")),
+                        Choices = new List<Choice>()
+                    };
 
-new Question(
-    text: "Which component of fitness is related to the ability of the heart and lungs to supply oxygen to the muscles during exercise?",
-    choices: new List<string> { "A. Strength", "B. Flexibility", "C. Cardiovascular endurance", "D. Power" },
-    correctAnswer: "C. Cardiovascular endurance",
-    correctChoiceIndex: 2,
-    isPublic: true,
-    userID: null,
-    subjectID: 1
-),
+                    publicQuestions.Add(question);
+                }
+            }
 
-new Question(
-    text: "What is the primary function of the biceps brachii muscle?",
-    choices: new List<string> { "A. Flexion of the elbow", "B. Extension of the knee", "C. Abduction of the shoulder", "D. Plantarflexion of the ankle" },
-    correctAnswer: "A. Flexion of the elbow",
-    correctChoiceIndex: 0,
-    isPublic: true,
-    userID: null,
-    subjectID: 1
-),
+            // Retrieve and associate choices for each question
+            foreach (PublicQuestion question in publicQuestions)
+            {
+                string choicesQuery = "SELECT * FROM Choices WHERE QuestionID = @QuestionID";
+                using (SqlCommand choicesCommand = new SqlCommand(choicesQuery, connection))
+                {
+                    choicesCommand.Parameters.AddWithValue("@QuestionID", question.QuestionID);
 
-new Question(
-    text: "In which joint of the human body does the rotation occur?",
-    choices: new List<string> { "A. Hinge joint", "B. Ball-and-socket joint", "C. Pivot joint", "D. Gliding joint" },
-    correctAnswer: "C. Pivot joint",
-    correctChoiceIndex: 2,
-    isPublic: true,
-    userID: null,
-    subjectID: 1
-),
+                    using (SqlDataReader choicesReader = await choicesCommand.ExecuteReaderAsync())
+                    {
+                        while (await choicesReader.ReadAsync())
+                        {
+                            Choice choice = new Choice
+                            {
+                                ChoiceID = choicesReader.GetInt32(choicesReader.GetOrdinal("ChoiceID")),
+                                QuestionID = choicesReader.GetInt32(choicesReader.GetOrdinal("QuestionID")),
+                                ChoiceText = choicesReader.GetString(choicesReader.GetOrdinal("ChoiceText")),
+                                IsCorrect = choicesReader.GetBoolean(choicesReader.GetOrdinal("IsCorrect"))
+                            };
 
-new Question(
-    text: "What is the term for the body's ability to sense the position and movement of its body parts without visual or sensory feedback?",
-    choices: new List<string> { "A. Proprioception", "B. Perception", "C. Reflex", "D. Kinesthesia" },
-    correctAnswer: "A. Proprioception",
-    correctChoiceIndex: 0,
-    isPublic: true,
-    userID: null,
-    subjectID: 1
-),
-new Question(
-    text: "Which of the following is not a component of the FITT principle used in exercise prescription?",
-    choices: new List<string> { "A. Frequency", "B. Intensity", "C. Time", "D. Terrain" },
-    correctAnswer: "D. Terrain",
-    correctChoiceIndex: 3,
-    isPublic: true,
-    userID: null,
-    subjectID: 1
-),
+                            question.Choices.Add(choice);
+                        }
+                    }
+                }
+            }
+        }
 
-new Question(
-    text: "What is the term for the point in a muscle's range of motion at which the greatest force can be generated?",
-    choices: new List<string> { "A. Endurance point", "B. Insertion point", "C. Agonist point", "D. Strength curve" },
-    correctAnswer: "D. Strength curve",
-    correctChoiceIndex: 3,
-    isPublic: true,
-    userID: null,
-    subjectID: 1
-),
-
-new Question(
-    text: "Which of the following is a common method for measuring body composition in kinesiology and fitness assessments?",
-    choices: new List<string> { "A. Blood pressure measurement", "B. Skinfold thickness measurement", "C. Heart rate monitoring", "D. Lung capacity test" },
-    correctAnswer: "B. Skinfold thickness measurement",
-    correctChoiceIndex: 1,
-    isPublic: true,
-    userID: null,
-    subjectID: 1
-),
-new Question(
-    text: "Which muscle is responsible for extending the knee joint?",
-    choices: new List<string> { "A. Biceps brachii", "B. Quadriceps femoris", "C. Hamstring group", "D. Gastrocnemius" },
-    correctAnswer: "B. Quadriceps femoris",
-    correctChoiceIndex: 1,
-    isPublic: true,
-    userID: null,
-    subjectID: 1
-),
-
-new Question(
-    text: "What is the primary function of the triceps brachii muscle?",
-    choices: new List<string> { "A. Flexion of the elbow", "B. Extension of the knee", "C. Abduction of the shoulder", "D. Plantarflexion of the ankle" },
-    correctAnswer: "B. Extension of the knee",
-    correctChoiceIndex: 1,
-    isPublic: true,
-    userID: null,
-    subjectID: 1
-),
-
-new Question(
-    text: "Which type of muscle fiber is known for its endurance and is resistant to fatigue?",
-    choices: new List<string> { "A. Type I (slow-twitch)", "B. Type IIa (fast-twitch oxidative)", "C. Type IIx (fast-twitch glycolytic)", "D. Type III (intermediate)" },
-    correctAnswer: "A. Type I (slow-twitch",
-    correctChoiceIndex: 0,
-    isPublic: true,
-    userID: null,
-    subjectID: 1
-),
-
-new Question(
-    text: "What is the term for the process of muscles getting shorter and thicker, resulting in joint movement?",
-    choices: new List<string> { "A. Concentric contraction", "B. Eccentric contraction", "C. Isometric contraction", "D. Isokinetic contraction" },
-    correctAnswer: "A. Concentric contraction",
-    correctChoiceIndex: 0,
-    isPublic: true,
-    userID: null,
-    subjectID: 1
-),
-
-new Question(
-    text: "Which type of joint allows movement in all planes, including rotation?",
-    choices: new List<string> { "A. Hinge joint", "B. Ball-and-socket joint", "C. Pivot joint", "D. Saddle joint" },
-    correctAnswer: "B. Ball-and-socket joint",
-    correctChoiceIndex: 1,
-    isPublic: true,
-    userID: null,
-    subjectID: 1
-),
-
-new Question(
-    text: "What is the term for the bundle of muscle fibers within a muscle?",
-    choices: new List<string> { "A. Sarcolemma", "B. Myofibril", "C. Fascicle", "D. Sarcomere" },
-    correctAnswer: "C. Fascicle",
-    correctChoiceIndex: 2,
-    isPublic: true,
-    userID: null,
-    subjectID: 1
-),
-
-new Question(
-    text: "Which term describes the maximum amount of force a muscle or group of muscles can generate?",
-    choices: new List<string> { "A. Power", "B. Strength", "C. Endurance", "D. Flexibility" },
-    correctAnswer: "B. Strength",
-    correctChoiceIndex: 1,
-    isPublic: true,
-    userID: null,
-    subjectID: 1
-),
-
-new Question(
-    text: "In kinesiology, what does the acronym 'DOMS' stand for?",
-    choices: new List<string> { "A. Delayed Onset Muscle Soreness", "B. Dynamic Overload and Muscle Strain", "C. Direct Observation of Muscle Strength", "D. Daily Occupational Movement Strategies" },
-    correctAnswer: "A. Delayed Onset Muscle Soreness",
-    correctChoiceIndex: 0,
-    isPublic: true,
-    userID: null,
-    subjectID: 1
-),
-
-new Question(
-    text: "What type of exercise involves the muscle contracting while it shortens?",
-    choices: new List<string> { "A. Concentric exercise", "B. Eccentric exercise", "C. Isometric exercise", "D. Isokinetic exercise" },
-    correctAnswer: "A. Concentric exercise",
-    correctChoiceIndex: 0,
-    isPublic: true,
-    userID: null,
-    subjectID: 1
-),
-
-new Question(
-    text: "Which term is used to describe a muscle that is responsible for producing a particular movement?",
-    choices: new List<string> { "A. Antagonist", "B. Synergist", "C. Stabilizer", "D. Agonist" },
-    correctAnswer: "D. Agonist",
-    correctChoiceIndex: 3,
-    isPublic: true,
-    userID: null,
-    subjectID: 1
-),
-
-new Question(
-    text: "What is the term for the range of motion at a joint where no movement occurs?",
-    choices: new List<string> { "A. Flexion", "B. Extension", "C. Neutral position", "D. Resting position" },
-    correctAnswer: "C. Neutral position",
-    correctChoiceIndex: 2,
-    isPublic: true,
-    userID: null,
-    subjectID: 1
-),
-
-new Question(
-    text: "Which of the following is an example of an open kinetic chain exercise for the leg muscles?",
-    choices: new List<string> { "A. Leg press", "B. Squats", "C. Lunges", "D. Leg curls" },
-    correctAnswer: "A. Leg press",
-    correctChoiceIndex: 0,
-    isPublic: true,
-    userID: null,
-    subjectID: 1
-),
-
-new Question(
-    text: "What is the term for the protective fluid-filled sac found in some joints to reduce friction between moving parts?",
-    choices: new List<string> { "A. Ligament", "B. Tendon", "C. Bursa", "D. Synapse" },
-    correctAnswer: "C. Bursa",
-    correctChoiceIndex: 2,
-    isPublic: true,
-    userID: null,
-    subjectID: 1
-),
-
-new Question(
-    text: "What is the term for the attachment point of a muscle that moves during a contraction?",
-    choices: new List<string> { "A. Origin", "B. Insertion", "C. Belly", "D. Tendon" },
-    correctAnswer: "B. Insertion",
-    correctChoiceIndex: 1,
-    isPublic: true,
-    userID: null,
-    subjectID: 1
-),
-
-new Question(
-    text: "Which component of the nervous system controls voluntary muscle movements and is responsible for conscious actions?",
-    choices: new List<string> { "A. Autonomic nervous system", "B. Central nervous system", "C. Peripheral nervous system", "D. Sympathetic nervous system" },
-    correctAnswer: "B. Central nervous system",
-    correctChoiceIndex: 1,
-    isPublic: true,
-    userID: null,
-    subjectID: 1
-),
-
-
-        // Add more dummy questions here...
-        };
-        return dummyQuestions;
-
+        return new ObservableCollection<PublicQuestion>(publicQuestions);
     }
 
-    public List<Question> GetUserQuestions(int userId)
+    public PublicQuestion GetPublicQuestion(int questionID)
     {
+        PublicQuestion question = null;
 
-        // Replace this with your actual logic to retrieve user-specific questions using Entity Framework.
-        return dbContext.Questions.Where(q => q.UserID == userId).ToList();
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+
+            string query = "SELECT * FROM PublicQuestions WHERE QuestionID = @QuestionID";
+
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@QuestionID", questionID);
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        question = new PublicQuestion
+                        {
+                            QuestionID = reader.GetInt32(reader.GetOrdinal("QuestionID")),
+                            Text = reader.GetString(reader.GetOrdinal("Text")),
+                            IsPublic = reader.GetBoolean(reader.GetOrdinal("IsPublic")),
+                            UserID = reader.IsDBNull(reader.GetOrdinal("UserID")) ? (int?)null : reader.GetInt32(reader.GetOrdinal("UserID")),
+                            SubjectID = reader.GetInt32(reader.GetOrdinal("SubjectID")),
+                            Choices = new List<Choice>()
+                        };
+                    }
+                }
+            }
+        }
+
+        if (question != null)
+        {
+            // Retrieve and associate choices for the question
+            question.Choices = GetChoicesForQuestion(questionID);
+        }
+
+        return question;
     }
 
-    public void AddQuestion(Question question)
+    public List<Choice> GetChoicesForQuestion(int questionID)
     {
-        // Replace this with your actual logic to add a question using Entity Framework.
-        dbContext.Questions.Add(question);
-        dbContext.SaveChanges();
+        List<Choice> choices = new List<Choice>();
+
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+
+            string query = "SELECT * FROM Choices WHERE QuestionID = @QuestionID";
+
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@QuestionID", questionID);
+
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Choice choice = new Choice
+                        {
+                            ChoiceID = reader.GetInt32(reader.GetOrdinal("ChoiceID")),
+                            QuestionID = reader.GetInt32(reader.GetOrdinal("QuestionID")),
+                            ChoiceText = reader.GetString(reader.GetOrdinal("ChoiceText")),
+                            IsCorrect = reader.GetBoolean(reader.GetOrdinal("IsCorrect"))
+                        };
+
+                        choices.Add(choice);
+                    }
+                }
+            }
+        }
+
+        return choices;
     }
 
-    public void UpdateQuestion(Question question)
+
+
+
+    public void AddPublicQuestion(PublicQuestion question)
     {
-        // Replace this with your actual logic to update a question using Entity Framework.
-        dbContext.Questions.Update(question);
-        dbContext.SaveChanges();
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+
+            // Step 1: Insert the question into the PublicQuestions table
+            string insertQuestionQuery = "INSERT INTO PublicQuestions (Text, IsPublic, UserID, SubjectID) " +
+                "VALUES (@Text, @IsPublic, @UserID, @SubjectID); SELECT SCOPE_IDENTITY();";
+
+            using (SqlCommand insertQuestionCommand = new SqlCommand(insertQuestionQuery, connection))
+            {
+                insertQuestionCommand.Parameters.AddWithValue("@Text", question.Text);
+                insertQuestionCommand.Parameters.AddWithValue("@IsPublic", question.IsPublic);
+                insertQuestionCommand.Parameters.AddWithValue("@UserID", question.UserID ?? (object)DBNull.Value);
+                insertQuestionCommand.Parameters.AddWithValue("@SubjectID", question.SubjectID);
+
+                // Get the new question's ID
+                int newQuestionID = Convert.ToInt32(insertQuestionCommand.ExecuteScalar());
+
+                // Step 2: Insert choices into the Choices table
+                string insertChoicesQuery = "INSERT INTO Choices (QuestionID, ChoiceText, IsCorrect) VALUES (@QuestionID, @ChoiceText, @IsCorrect)";
+
+                foreach (Choice choice in question.Choices)
+                {
+                    using (SqlCommand insertChoicesCommand = new SqlCommand(insertChoicesQuery, connection))
+                    {
+                        insertChoicesCommand.Parameters.AddWithValue("@QuestionID", newQuestionID);
+                        insertChoicesCommand.Parameters.AddWithValue("@ChoiceText", choice.ChoiceText);
+                        insertChoicesCommand.Parameters.AddWithValue("@IsCorrect", choice.IsCorrect);
+
+                        insertChoicesCommand.ExecuteNonQuery();
+                    }
+                }
+            }
+        }
     }
+
+
+
+    public void UpdatePublicQuestion(PublicQuestion question)
+    {
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        {
+            connection.Open();
+
+            string query = "UPDATE PublicQuestions SET Text = @Text, IsPublic = @IsPublic, UserID = @UserID, SubjectID = @SubjectID WHERE QuestionID = @QuestionID";
+
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@QuestionID", question.QuestionID);
+                command.Parameters.AddWithValue("@Text", question.Text);
+                command.Parameters.AddWithValue("@IsPublic", question.IsPublic);
+                command.Parameters.AddWithValue("@UserID", question.UserID ?? (object)DBNull.Value);
+                command.Parameters.AddWithValue("@SubjectID", question.SubjectID);
+
+                command.ExecuteNonQuery();
+            }
+        }
+    }
+
+
 
     public void PatchQuestion(int questionId, Dictionary<string, object> changes)
     {
-        // Replace this with your actual logic to partially update a question using Entity Framework.
-        var existingQuestion = dbContext.Questions.FirstOrDefault(q => q.Id == questionId);
-        if (existingQuestion != null)
+        using (SqlConnection connection = new SqlConnection(connectionString))
         {
+            connection.Open();
+            string updateQuery = "UPDATE Questions SET ";
+
             foreach (var change in changes)
             {
                 if (change.Key.Equals("Text", StringComparison.OrdinalIgnoreCase))
                 {
-                    existingQuestion.Text = change.Value.ToString();
+                    updateQuery += "Text = @Text, ";
                 }
                 else if (change.Key.Equals("IsPublic", StringComparison.OrdinalIgnoreCase))
                 {
-                    existingQuestion.IsPublic = (bool)change.Value;
+                    updateQuery += "IsPublic = @IsPublic, ";
                 }
                 // Add more properties to update as needed
             }
-            dbContext.SaveChanges();
+
+            // Remove the trailing comma and space
+            updateQuery = updateQuery.Substring(0, updateQuery.Length - 2);
+
+            updateQuery += " WHERE Id = @Id";
+
+            using (SqlCommand command = new SqlCommand(updateQuery, connection))
+            {
+                foreach (var change in changes)
+                {
+                    command.Parameters.AddWithValue("@" + change.Key, change.Value);
+                }
+                command.Parameters.AddWithValue("@Id", questionId);
+
+                command.ExecuteNonQuery();
+            }
         }
     }
 
+
     public void DeleteQuestion(int questionId)
     {
-        // Replace this with your actual logic to delete a question using Entity Framework.
-        var questionToDelete = dbContext.Questions.FirstOrDefault(q => q.Id == questionId);
-        if (questionToDelete != null)
+        using (SqlConnection connection = new SqlConnection(connectionString))
         {
-            dbContext.Questions.Remove(questionToDelete);
-            dbContext.SaveChanges();
+            connection.Open();
+
+            string query = "DELETE FROM Questions WHERE Id = @Id";
+
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@Id", questionId);
+
+                command.ExecuteNonQuery();
+            }
         }
     }
+
 }

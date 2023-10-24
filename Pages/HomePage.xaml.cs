@@ -1,36 +1,44 @@
-using MblexApp.Context;
+
 using MblexApp.Models;
 using MblexApp.ViewModel;
 namespace MblexApp;
 
 public partial class HomePage : ContentPage
 {
-    private readonly MyDbContext dbContext;
+    private readonly string connectionString = "Server=tcp:jtappserver.database.windows.net,1433;Initial Catalog=MblexDB;Persist Security Info=False;User ID=jthuko;Password=Jnzusyo77!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
     private readonly QuestionViewModel viewModel;
     public HomePage()
     {
         InitializeComponent();
 
         // Resolve dependencies using DependencyService
-        dbContext = DependencyService.Get<MyDbContext>();
-        viewModel = new QuestionViewModel(new QuestionService(dbContext));
+        var questionService = new QuestionService(connectionString);
+        viewModel = new QuestionViewModel(questionService);
         BindingContext = viewModel;
-    }
 
+    }
     private void RadioButton_CheckedChanged(object sender, CheckedChangedEventArgs e)
     {
         if (sender is RadioButton radioButton && e.Value)
-        {//
+        {
             string selectedValue = (string)radioButton.Value;
-            // Now, 'selectedValue' contains the text of the checked radio button
-            Question selectedDataObject = radioButton.BindingContext as Question;
+            PublicQuestion selectedQuestion = radioButton.BindingContext as PublicQuestion;
 
-            if (selectedDataObject != null)
+            if (selectedQuestion != null)
             {
-                // 'selectedDataObject' contains the data object bound to the checked radio button
+                // Find the choice that corresponds to the selected answer
+                Choice selectedChoice = selectedQuestion.Choices.FirstOrDefault(choice => choice.ChoiceText == selectedValue);
+
+                if (selectedChoice != null)
+                {
+                    // Check if the selected choice is marked as correct
+                    bool isCorrect = selectedChoice.IsCorrect;
+
+                }
             }
         }
-
     }
+
+
 }
 
