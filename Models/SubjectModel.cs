@@ -10,6 +10,6 @@ namespace MblexApp.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<Question> Questions { get; set; } = new List<Question>(); // Initialize the Questions list
+        public List<PublicQuestion> Questions { get; set; } = new List<PublicQuestion>(); // Initialize the Questions list
     }
 }

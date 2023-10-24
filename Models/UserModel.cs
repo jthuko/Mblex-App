@@ -36,6 +36,6 @@ namespace MblexApp.Models
 
         public string PasswordSalt { get; set; }
 
-        public List<Question> OwnedQuestions { get; set; } = new List<Question>(); // Questions owned by the user
+        public List<UserQuestion> OwnedQuestions { get; set; } = new List<UserQuestion>(); // Questions owned by the user
     }
 }
