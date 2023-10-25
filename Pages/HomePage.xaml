@@ -31,16 +31,6 @@
                         <RadioButton Content="{Binding Choices[1].ChoiceText}" Value="{Binding Choices[1].ChoiceText}" CheckedChanged="RadioButton_CheckedChanged" />
                         <RadioButton Content="{Binding Choices[2].ChoiceText}" Value="{Binding Choices[2].ChoiceText}" CheckedChanged="RadioButton_CheckedChanged" />
                         <RadioButton Content="{Binding Choices[3].ChoiceText}" Value="{Binding Choices[3].ChoiceText}" CheckedChanged="RadioButton_CheckedChanged" />
-                        <Label Text="Answer">
-                            <Label.Triggers>
-                                <DataTrigger TargetType="Label" Binding="{Binding IsCorrectAnswer}" Value="True">
-                                    <Setter Property="TextColor" Value="Green" />
-                                </DataTrigger>
-                                <DataTrigger TargetType="Label" Binding="{Binding IsCorrectAnswer}" Value="False">
-                                    <Setter Property="TextColor" Value="Red" />
-                                </DataTrigger>
-                            </Label.Triggers>
-                        </Label>
                     </StackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>

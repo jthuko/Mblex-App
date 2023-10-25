@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.Json;
-
+using MblexApp;
 using MblexApp.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -152,9 +152,6 @@ public class QuestionService
         return choices;
     }
 
-
-
-
     public void AddPublicQuestion(PublicQuestion question)
     {
         using (SqlConnection connection = new SqlConnection(connectionString))
@@ -273,5 +270,6 @@ public class QuestionService
             }
         }
     }
+
 
 }
