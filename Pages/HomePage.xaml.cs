@@ -33,6 +33,17 @@ public partial class HomePage : ContentPage
                 {
                     // Check if the selected choice is marked as correct
                     bool isCorrect = selectedChoice.IsCorrect;
+                    // Change the text color of the radiobutton based on the answer
+                    if (isCorrect)
+                    {
+                        Color green = new Color(0, 255, 0, 255);
+                        radioButton.TextColor = green;
+                    }
+                    else
+                    {
+                        Color red = new Color(255, 0, 0, 255);
+                        radioButton.TextColor = red;
+                    }
 
                 }
             }
