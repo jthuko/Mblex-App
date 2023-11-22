@@ -55,7 +55,43 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Pages\HomePage.xaml">
+	  <Compile Update="Pages\EthicsPage.xaml.cs">
+	    <DependentUpon>EthicsPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Pages\TechniquesPage.xaml.cs">
+	    <DependentUpon>TechniquesPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Pages\PathologyPage.xaml.cs">
+	    <DependentUpon>PathologyPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Pages\KinesiologyPage.xaml.cs">
+	    <DependentUpon>KinesiologyPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Pages\DisordersPage .xaml.cs">
+	    <DependentUpon>DisordersPage .xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Pages\AnatomyPage.xaml.cs">
+	    <DependentUpon>AnatomyPage.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Pages\EthicsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\TechniquesPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\PathologyPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\KinesiologyPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\DisordersPage .xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\AnatomyPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\MyContent.xaml">

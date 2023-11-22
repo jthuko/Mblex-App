@@ -10,7 +10,7 @@ using System.Windows.Input;
 namespace MblexApp.ViewModel
 {
 
-    public class QuestionViewModel:INotifyPropertyChanged
+    public class EthicsViewModel:INotifyPropertyChanged
     {
         private ObservableCollection<PublicQuestion> publicQuestions;
         public ObservableCollection<PublicQuestion> PublicQuestions
@@ -41,11 +41,11 @@ namespace MblexApp.ViewModel
         }
        
 
-        private readonly QuestionService questionService;
+        private readonly AppService appService;
 
-        public QuestionViewModel(QuestionService questionService)
+        public EthicsViewModel(AppService appService)
         {
-            this.questionService = questionService;
+            this.appService = appService;
             PublicQuestions = new ObservableCollection<PublicQuestion>();
             LoadPublicQuestions();           
         }       
@@ -54,7 +54,7 @@ namespace MblexApp.ViewModel
         {
             // Retrieve public questions from the QuestionService
             PublicQuestions.Clear();
-            var publicQuestions = await questionService.GetPublicQuestionsAsync();
+            var publicQuestions = await appService.GetPublicQuestionsAsync(6);
             foreach (var question in publicQuestions)
             {
                 PublicQuestions.Add(question);

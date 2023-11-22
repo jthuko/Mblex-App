@@ -3,17 +3,17 @@ using MblexApp.Models;
 using MblexApp.ViewModel;
 namespace MblexApp;
 
-public partial class HomePage : ContentPage
+public partial class KinesiologyPage : ContentPage
 {
     private readonly string connectionString = "Server=tcp:jtappserver.database.windows.net,1433;Initial Catalog=MblexDB;Persist Security Info=False;User ID=jthuko;Password=Jnzusyo77!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-    private readonly QuestionViewModel viewModel;
-    public HomePage()
+    private readonly KinesiologyViewModel viewModel;
+    public KinesiologyPage()
     {
         InitializeComponent();
 
         // Resolve dependencies using DependencyService
-        var questionService = new QuestionService(connectionString);
-        viewModel = new QuestionViewModel(questionService);
+        var questionService = new AppService(connectionString);
+        viewModel = new KinesiologyViewModel(questionService);
         BindingContext = viewModel;
 
     }

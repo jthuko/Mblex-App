@@ -8,16 +8,16 @@ using MblexApp.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
-public class QuestionService
+public class AppService
  { 
     private readonly string connectionString = "Server=tcp:jtappserver.database.windows.net,1433;Initial Catalog=MblexDB;Persist Security Info=False;User ID=jthuko;Password=Jnzusyo77!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
-    public QuestionService(string connectionString)
+    public AppService(string connectionString)
     {
         this.connectionString = connectionString;
     }
 
-    public async Task<ObservableCollection<PublicQuestion>> GetPublicQuestionsAsync()
+    public async Task<ObservableCollection<PublicQuestion>> GetPublicQuestionsAsync(int subjectID)
     {
         List<PublicQuestion> publicQuestions = new List<PublicQuestion>();
 
@@ -25,26 +25,31 @@ public class QuestionService
         {
             connection.Open();
 
-            string questionQuery = "SELECT * FROM PublicQuestions";
-
+            string questionQuery = "SELECT * FROM PublicQuestions Where SubjectID = @SubjectID";
+            
             using (SqlCommand questionCommand = new SqlCommand(questionQuery, connection))
-            using (SqlDataReader questionReader = await questionCommand.ExecuteReaderAsync())
             {
-                while (await questionReader.ReadAsync())
+                questionCommand.Parameters.AddWithValue("@SubjectID", subjectID);
+                using (SqlDataReader questionReader = await questionCommand.ExecuteReaderAsync())
                 {
-                    PublicQuestion question = new PublicQuestion
-                    {
-                        QuestionID = questionReader.GetInt32(questionReader.GetOrdinal("QuestionID")),
-                        Text = questionReader.GetString(questionReader.GetOrdinal("Text")),
-                        IsPublic = questionReader.GetBoolean(questionReader.GetOrdinal("IsPublic")),
-                        UserID = questionReader.IsDBNull(questionReader.GetOrdinal("UserID")) ? (int?)null : questionReader.GetInt32(questionReader.GetOrdinal("UserID")),
-                        SubjectID = questionReader.GetInt32(questionReader.GetOrdinal("SubjectID")),
-                        Choices = new List<Choice>()
-                    };
 
-                    publicQuestions.Add(question);
+                    while (await questionReader.ReadAsync())
+                    {
+                        PublicQuestion question = new PublicQuestion
+                        {
+                            QuestionID = questionReader.GetInt32(questionReader.GetOrdinal("QuestionID")),
+                            Text = questionReader.GetString(questionReader.GetOrdinal("Text")),
+                            IsPublic = questionReader.GetBoolean(questionReader.GetOrdinal("IsPublic")),
+                            UserID = questionReader.IsDBNull(questionReader.GetOrdinal("UserID")) ? (int?)null : questionReader.GetInt32(questionReader.GetOrdinal("UserID")),
+                            SubjectID = questionReader.GetInt32(questionReader.GetOrdinal("SubjectID")),
+                            Choices = new List<Choice>()
+                        };
+
+                        publicQuestions.Add(question);
+                    }
                 }
             }
+           
 
             // Retrieve and associate choices for each question
             foreach (PublicQuestion question in publicQuestions)

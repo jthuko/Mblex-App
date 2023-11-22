@@ -8,7 +8,7 @@ namespace MblexApp.ViewModel
     public class UserViewModel : INotifyPropertyChanged
     {
 
-        private readonly QuestionService questionService;
+        private readonly AppService appService;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -38,9 +38,9 @@ namespace MblexApp.ViewModel
 
         public ICommand SelectAnswerCommand { get; private set; }
 
-        public UserViewModel(QuestionService questionService)
+        public UserViewModel(AppService appService)
         {
-            this.questionService = questionService;
+            this.appService = appService;
             UserQuestions = new ObservableCollection<UserQuestion>();
           //  LoadUserQuestions();
            

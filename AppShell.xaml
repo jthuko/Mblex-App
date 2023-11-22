@@ -6,14 +6,26 @@
     xmlns:local="clr-namespace:MblexApp"
     Shell.FlyoutBehavior="Flyout">
 
-    <ShellContent
-    Title="Log In"
-    ContentTemplate="{DataTemplate local:MainPage}"
-    Route="MainPage" />
-    <ShellContent Title="Home"
+    <ShellContent Title="Anatomy"
                  Icon="cat.png"
-                 ContentTemplate="{DataTemplate local:HomePage}"
-                  Route="HomePage" />
+                 ContentTemplate="{DataTemplate local:AnatomyPage}"
+                  Route="AnatomyPage" />
+    <ShellContent Title="Kinesiology"
+             Icon="cat.png"
+             ContentTemplate="{DataTemplate local:KinesiologyPage}"
+              Route="KinesiologyPage" />
+    <ShellContent Title="Pathology"
+         Icon="cat.png"
+         ContentTemplate="{DataTemplate local:PathologyPage}"
+          Route="PathologyPage" />
+    <ShellContent Title="Disorders"
+             Icon="cat.png"
+             ContentTemplate="{DataTemplate local:DisordersPage}"
+              Route="DisordersPage" />
+    <ShellContent Title="Techniques"
+                Icon="cat.png"
+                ContentTemplate="{DataTemplate local:TechniquesPage}"
+                Route="TechniquesPage" />
     <ShellContent Title="My Content"
                  Icon="dog.png"
                  ContentTemplate="{DataTemplate local:MyContent}" 
@@ -22,4 +34,8 @@
              Icon="dog.png"
              ContentTemplate="{DataTemplate local:SettingsPage}" 
               Route="SettingsPage" />
+    <ShellContent
+        Title="Log In"
+        ContentTemplate="{DataTemplate local:MainPage}"
+        Route="MainPage" />
 </Shell>

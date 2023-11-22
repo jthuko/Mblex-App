@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:MblexApp"
-             x:Class="MblexApp.HomePage">
+             x:Class="MblexApp.EthicsPage">
     <ContentPage.Resources>
         <local:BoolToInverseBoolConverter x:Key="BoolToInverseBoolConverter" />
         <local:IndexToBooleanConverter x:Key="IndexToBooleanConverter" />
@@ -19,7 +19,7 @@
                TextColor="White"
                FontAttributes="Bold"
                FontAutoScalingEnabled="True"
-               Text="Home"/>
+               Text="Ethics"/>
     </NavigationPage.TitleView>
     <ContentPage.Content>
         <CollectionView x:Name="QuestionsListView" ItemsSource="{Binding PublicQuestions}" SelectionMode="None">
@@ -35,8 +35,5 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-
-
-
     </ContentPage.Content>
 </ContentPage>
