@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace MblexApp.Models
 {
+    //Main public questions list
     public class PublicQuestion
     {
         public int QuestionID { get; set; }
