@@ -7,11 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MblexApp.StaticMethods
+namespace MblexApp
 {
     public static class UserManager
     {
-        private static string connectionString = "your_connection_string_here";
+        private static string connectionString = "Server=tcp:jtappserver.database.windows.net,1433;Initial Catalog=MblexDB;Persist Security Info=False;User ID=jthuko;Password=Jnzusyo77!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
         public static bool LoginUser(string usernameOrEmail, string password)
         {
@@ -75,10 +75,12 @@ namespace MblexApp.StaticMethods
                 // Call the stored procedure to insert the user into the database
                 using (var command = new SqlCommand("sp_InsertUser", connection))
                 {
+                    var isPremium = 0;
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@Username", username);
                     command.Parameters.AddWithValue("@Email", email);
                     command.Parameters.AddWithValue("@PasswordHash", passwordHash);
+                    command.Parameters.AddWithValue("@IsPremium", isPremium);
 
                     command.ExecuteNonQuery();
                 }

@@ -18,17 +18,7 @@ namespace MblexApp.Models
         [EmailAddress(ErrorMessage = "Invalid email address.")]
         public string Email { get; set; }
 
-        public bool IsPremiumMember { get; set; }
-
-        [Required(ErrorMessage = "City is required.")]
-        public string City { get; set; }
-
-        public string State { get; set; }
-
-        public string ZipCode { get; set; }
-
-        [Required(ErrorMessage = "Country is required.")]
-        public string Country { get; set; }
+        public bool IsPremium { get; set; }
 
         [Required(ErrorMessage = "Password is required.")]
         [MinLength(6, ErrorMessage = "Password must be at least 6 characters.")]
