@@ -6,6 +6,8 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MblexApp.Services;
+using MblexApp.Models;
 
 namespace MblexApp
 {
@@ -39,7 +41,29 @@ namespace MblexApp
 
                 if (!string.IsNullOrEmpty(storedPasswordHash) && VerifyPassword(password, storedPasswordHash))
                 {
-                    return true; // Login successful
+                    // Check if user settings already exist
+                    var existingUserSettings = AuthenticationService.GetUserSettings();
+
+                    if (existingUserSettings == null)
+                    {
+                        // User settings do not exist, save them
+                        var userSettings = new UserSettings
+                        {
+                            Username = usernameOrEmail,
+                            Password = storedPasswordHash,
+                            LastLoginTime = DateTime.Now
+                        };
+
+                        AuthenticationService.SaveUserSettings(userSettings);
+                    }
+                    else
+                    {
+                        // User settings already exist, update them
+                        existingUserSettings.LastLoginTime = DateTime.Now;
+                        AuthenticationService.SaveUserSettings(existingUserSettings);
+                    }
+
+                    return true;
                 }
             }
 
