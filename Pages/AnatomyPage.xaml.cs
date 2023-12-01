@@ -15,7 +15,7 @@ public partial class AnatomyPage : ContentPage
         var questionService = new AppService(connectionString);
         viewModel = new AnatomyViewModel(questionService);
         BindingContext = viewModel;
-
+        
     }
     private void RadioButton_CheckedChanged(object sender, CheckedChangedEventArgs e)
     {
@@ -50,6 +50,25 @@ public partial class AnatomyPage : ContentPage
         }
     }
 
-
+    private void Button_Clicked(object sender, EventArgs e)
+    {
+        // Clear the text color of all RadioButtons
+        ClearRadioButtonTextColors();
+        // Update the ViewModel to reload the list or reset properties
+        viewModel.ReloadQuestions(); // Assuming you have a method like this in your ViewModel
+    }
+    private void ClearRadioButtonTextColors()
+    {
+        // Iterate through the RadioButtons in the layout and reset text color
+        foreach (var radioButton in QuestionsListView.GetVisualTreeDescendants().Where(c => c is RadioButton))
+        {
+            if (radioButton is RadioButton rb)
+            {
+                rb.TextColor = Color.FromRgba(0, 0, 0, 255);
+                // Uncheck the radio button
+                rb.IsChecked = false;
+            }
+        }
+    }
 }
 
