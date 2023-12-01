@@ -22,18 +22,35 @@
                Text="Kinesiology"/>
     </NavigationPage.TitleView>
     <ContentPage.Content>
-        <CollectionView x:Name="QuestionsListView" ItemsSource="{Binding PublicQuestions}" SelectionMode="None">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <StackLayout Padding="10">
-                        <Label Text="{Binding Text}" TextColor="Orange" />
-                        <RadioButton Content="{Binding Choices[0].ChoiceText}" Value="{Binding Choices[0].ChoiceText}" CheckedChanged="RadioButton_CheckedChanged" />
-                        <RadioButton Content="{Binding Choices[1].ChoiceText}" Value="{Binding Choices[1].ChoiceText}" CheckedChanged="RadioButton_CheckedChanged" />
-                        <RadioButton Content="{Binding Choices[2].ChoiceText}" Value="{Binding Choices[2].ChoiceText}" CheckedChanged="RadioButton_CheckedChanged" />
-                        <RadioButton Content="{Binding Choices[3].ChoiceText}" Value="{Binding Choices[3].ChoiceText}" CheckedChanged="RadioButton_CheckedChanged" />
-                    </StackLayout>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+        <!-- Use a Grid layout with two rows -->
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <!-- Auto-sized row for the button -->
+                <RowDefinition Height="*"/>
+                <!-- Star-sized row for the CollectionView to fill remaining space -->
+            </Grid.RowDefinitions>
+
+            <!-- Add a Clear button with a click event handler in the first row -->
+            <Button Grid.Row="0" Text="Reset Questions" Clicked="Button_Clicked" Margin="2"/>
+
+            <!-- CollectionView for displaying questions in the second row -->
+            <CollectionView Grid.Row="1" x:Name="QuestionsListView" ItemsSource="{Binding PublicQuestions}" SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Padding="10">
+                            <Label Text="{Binding Text}" TextColor="Black" FontAttributes="Bold" FontSize="Medium"/>
+                            <RadioButton Content="{Binding Choices[0].ChoiceText}" Value="{Binding Choices[0].ChoiceText}" CheckedChanged="RadioButton_CheckedChanged" />
+                            <RadioButton Content="{Binding Choices[1].ChoiceText}" Value="{Binding Choices[1].ChoiceText}" CheckedChanged="RadioButton_CheckedChanged" />
+                            <RadioButton Content="{Binding Choices[2].ChoiceText}" Value="{Binding Choices[2].ChoiceText}" CheckedChanged="RadioButton_CheckedChanged" />
+                            <RadioButton Content="{Binding Choices[3].ChoiceText}" Value="{Binding Choices[3].ChoiceText}" CheckedChanged="RadioButton_CheckedChanged" />
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <!-- Add an ActivityIndicator in the third row, centered horizontally and vertically -->
+            <ActivityIndicator Grid.Row="1" IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Color="Green"
+                       VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" />
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

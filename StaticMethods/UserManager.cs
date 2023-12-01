@@ -43,7 +43,7 @@ namespace MblexApp
                 {
                     // Check if user settings already exist
                     var existingUserSettings = AuthenticationService.GetUserSettings();
-
+                    var userDetails = GetUserDetails(usernameOrEmail);
                     if (existingUserSettings == null)
                     {
                         // User settings do not exist, save them
@@ -51,7 +51,8 @@ namespace MblexApp
                         {
                             Username = usernameOrEmail,
                             Password = storedPasswordHash,
-                            LastLoginTime = DateTime.Now
+                            LastLoginTime = DateTime.Now,
+                            IsPremium = userDetails.IsPremium
                         };
 
                         AuthenticationService.SaveUserSettings(userSettings);
@@ -60,6 +61,7 @@ namespace MblexApp
                     {
                         // User settings already exist, update them
                         existingUserSettings.LastLoginTime = DateTime.Now;
+                        existingUserSettings.IsPremium = userDetails.IsPremium;
                         AuthenticationService.SaveUserSettings(existingUserSettings);
                     }
 
@@ -138,6 +140,40 @@ namespace MblexApp
                 var hashBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
                 return BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
             }
+        }
+        public static UserDetails GetUserDetails(string usernameOrEmail)
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                // Define a SELECT query to get user details from the Users table
+                string selectQuery = "SELECT Username, Email, IsPremium FROM Users WHERE Username = @UsernameOrEmail OR Email = @UsernameOrEmail";
+
+                using (var command = new SqlCommand(selectQuery, connection))
+                {
+                    command.Parameters.AddWithValue("@UsernameOrEmail", usernameOrEmail);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            // Create a UserDetails object and populate it with data from the database
+                            var userDetails = new UserDetails
+                            {                               
+                                Username = reader["Username"].ToString(),
+                                Email = reader["Email"].ToString(),
+                                IsPremium = Convert.ToBoolean(reader["IsPremium"]),
+                                // Add other properties as needed
+                            };
+
+                            return userDetails;
+                        }
+                    }
+                }
+            }
+
+            return null; // User not found
         }
 
     }

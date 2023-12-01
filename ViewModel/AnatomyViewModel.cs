@@ -1,5 +1,6 @@
 ﻿
 using MblexApp.Models;
+using MblexApp.Services;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -26,6 +27,21 @@ namespace MblexApp.ViewModel
             }
         }
 
+        private bool isBusy;
+
+        public bool IsBusy
+        {
+            get { return isBusy; }
+            set
+            {
+                if (isBusy != value)
+                {
+                    isBusy = value;
+                    OnPropertyChanged(nameof(IsBusy));
+                }
+            }
+        }
+
         private string selectedValue;
         public string SelectedValue
         {
@@ -48,17 +64,40 @@ namespace MblexApp.ViewModel
             this.appService = appService;
             PublicQuestions = new ObservableCollection<PublicQuestion>();
             LoadPublicQuestions();           
-        }       
+        }
+        // Inside your AnatomyViewModel class
+        public void ReloadQuestions()
+        {
+            // Implement logic to reload questions or reset properties
+            // For example:
+            LoadPublicQuestions();
+        }
 
         private async void LoadPublicQuestions()
         {
+            // Check if user settings already exist
+            var existingUserSettings = AuthenticationService.GetUserSettings();
             // Retrieve public questions from the QuestionService
             PublicQuestions.Clear();
+            IsBusy = true;
             var publicQuestions = await appService.GetPublicQuestionsAsync(1);
-            foreach (var question in publicQuestions)
+            if(existingUserSettings != null && existingUserSettings.IsPremium)
             {
-                PublicQuestions.Add(question);
+                foreach (var question in publicQuestions)
+                {
+                    PublicQuestions.Add(question);
+                }
             }
+            else
+            {
+                // Show only the first 20 questions
+                var first10Questions = publicQuestions.Take(10).ToList();
+                foreach (var question in first10Questions)
+                {
+                    PublicQuestions.Add(question);
+                }
+            }
+            IsBusy = false;
         }
 
 
