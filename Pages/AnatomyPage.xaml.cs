@@ -22,7 +22,19 @@ public partial class AnatomyPage : ContentPage
         if (sender is RadioButton radioButton && e.Value)
         {
             string selectedValue = (string)radioButton.Value;
-            PublicQuestion selectedQuestion = radioButton.BindingContext as PublicQuestion;
+            // Find the parent container (StackLayout) that has the PublicQuestion as its BindingContext
+            //  var stackLayout = FindParentStackLayout(radioButton);
+            PublicQuestion selectedQuestion = null;
+           // PublicQuestion selectedQuestion = radioButton.BindingContext as PublicQuestion;
+
+            if (radioButton.Parent is StackLayout stackLayout)
+            {
+                // Access the PublicQuestion from the BindingContext of the parent StackLayout
+                if (stackLayout.BindingContext is PublicQuestion SelectedQuestion)
+                {
+                    selectedQuestion = SelectedQuestion;
+                }
+            }
 
             if (selectedQuestion != null)
             {
@@ -50,6 +62,7 @@ public partial class AnatomyPage : ContentPage
         }
     }
 
+ 
     private void Button_Clicked(object sender, EventArgs e)
     {
         // Clear the text color of all RadioButtons

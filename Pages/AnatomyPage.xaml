@@ -40,10 +40,14 @@
                     <DataTemplate>
                         <StackLayout Padding="10">
                             <Label Text="{Binding Text}" TextColor="Black" FontAttributes="Bold" FontSize="Medium"/>
-                            <RadioButton Content="{Binding Choices[0].ChoiceText}" Value="{Binding Choices[0].ChoiceText}" CheckedChanged="RadioButton_CheckedChanged" />
-                            <RadioButton Content="{Binding Choices[1].ChoiceText}" Value="{Binding Choices[1].ChoiceText}" CheckedChanged="RadioButton_CheckedChanged" />
-                            <RadioButton Content="{Binding Choices[2].ChoiceText}" Value="{Binding Choices[2].ChoiceText}" CheckedChanged="RadioButton_CheckedChanged" />
-                            <RadioButton Content="{Binding Choices[3].ChoiceText}" Value="{Binding Choices[3].ChoiceText}" CheckedChanged="RadioButton_CheckedChanged" />
+                            <!-- Use a BindableLayout to generate radio buttons for choices -->
+                            <StackLayout BindableLayout.ItemsSource="{Binding Choices}">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate>
+                                        <RadioButton Content="{Binding ChoiceText}" Value="{Binding ChoiceText}" CheckedChanged="RadioButton_CheckedChanged" />
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </StackLayout>
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
