@@ -3,6 +3,7 @@ using MblexApp;
 using MblexApp.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Maui.Controls;
 using Plugin.InAppBilling;
 
 namespace MblexApp
@@ -14,15 +15,24 @@ namespace MblexApp
         public MainPage()
         {
             InitializeComponent();
+            // Initialize in-app billing
+           
             // Get the InAppBillingService instance using DependencyService
             inAppBillingService = DependencyService.Get<IInAppBillingService>();
         }
         protected override void OnAppearing()
         {
             base.OnAppearing();
+            var billing = CrossInAppBilling.Current;
             // Replace "your_subscription_product_id_here" with the actual subscription product ID
-            var subscriptionProductId = "mblexpremium";
-            var subscriptionInfo = inAppBillingService.GetProductInfoAsync(ItemType.Subscription, subscriptionProductId).Result;
+            var connected = billing.ConnectAsync().Result;
+            if (connected)
+            {
+                var subscriptionProductId = "mblexpremium";
+                var subscriptionInfo = inAppBillingService.GetProductInfoAsync(ItemType.Subscription, subscriptionProductId).Result;
+            }
+             
+           
 
         }
 
@@ -52,5 +62,7 @@ namespace MblexApp
             // Replace this with your actual authentication logic using the LoginUser method
             return UserManager.LoginUser(usernameOrEmail, password);
         }
+
+
     }
 }

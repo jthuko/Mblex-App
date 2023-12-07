@@ -19,6 +19,9 @@ namespace MblexApp
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
+
+            // Register services
+            // Register the appropriate implementation
             return builder.Build();
         }       
 

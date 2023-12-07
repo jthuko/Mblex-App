@@ -1,5 +1,6 @@
 ﻿using MblexApp.Models;
 using MblexApp.Services;
+using Plugin.InAppBilling;
 
 namespace MblexApp
 {
@@ -14,7 +15,8 @@ namespace MblexApp
         protected override void OnStart()
         {
             // Handle when your app starts
-
+            // Initialize in-app billing
+           
             // Attempt automatic login
             AttemptAutoLogin();
         }
