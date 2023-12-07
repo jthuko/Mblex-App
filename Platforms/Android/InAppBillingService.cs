@@ -121,6 +121,31 @@ namespace MblexApp.Platforms.Android
                 return false;
             }
         }
+        public async Task<IEnumerable<InAppBillingProduct>> GetProductInfoAsync(ItemType itemType, params string[] productIds)
+        {
+            try
+            {
+                var billing = CrossInAppBilling.Current;
 
+                // Connect to the billing service
+                var connected = await billing.ConnectAsync();
+
+                if (!connected)
+                {
+                    // Failed to connect to the billing service
+                    return null;
+                }
+
+                // Query the product info for the specified productIds
+                var products = await billing.GetProductInfoAsync(itemType, productIds);
+
+                return products;
+            }
+            catch (InAppBillingPurchaseException ex)
+            {
+                // Handle any in-app billing exceptions
+                return null;
+            }
+        }
     }
 }

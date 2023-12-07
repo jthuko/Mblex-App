@@ -1,25 +1,35 @@
 ﻿
 using MblexApp;
+using MblexApp.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-
+using Plugin.InAppBilling;
 
 namespace MblexApp
 {
     public partial class MainPage : ContentPage
     {
         int count = 0;
-
+        private readonly IInAppBillingService inAppBillingService;
         public MainPage()
         {
             InitializeComponent();
-                    
+            // Get the InAppBillingService instance using DependencyService
+            inAppBillingService = DependencyService.Get<IInAppBillingService>();
         }
-        
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            // Replace "your_subscription_product_id_here" with the actual subscription product ID
+            var subscriptionProductId = "mblexpremium";
+            var subscriptionInfo = inAppBillingService.GetProductInfoAsync(ItemType.Subscription, subscriptionProductId).Result;
+
+        }
 
         private void OnSignupClicked(object sender, EventArgs e)
-        {
-            App.Current.MainPage = new NavigationPage(new SignupPage());
+        {       
+
+                App.Current.MainPage = new NavigationPage(new SignupPage());
         }
 
         private void OnLoginClicked(object sender, EventArgs e)

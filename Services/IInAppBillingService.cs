@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Plugin.InAppBilling;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,5 +11,6 @@ namespace MblexApp.Services
     {
         Task<bool> PurchaseSubscriptionAsync(string productId);
         Task<bool> UnsubscribeAsync(string productId);
+        Task<IEnumerable<InAppBillingProduct>> GetProductInfoAsync(ItemType itemType, params string[] productIds);
     }
 }
