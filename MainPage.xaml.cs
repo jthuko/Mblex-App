@@ -20,21 +20,24 @@ namespace MblexApp
             // Get the InAppBillingService instance using DependencyService
             inAppBillingService = DependencyService.Get<IInAppBillingService>();
         }
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
 
         {
             base.OnAppearing();
-            var billing = CrossInAppBilling.Current;
-            // Replace "your_subscription_product_id_here" with the actual subscription product ID
-            var connected = billing.ConnectAsync().Result;
-            if (connected)
-            {
-                var subscriptionProductId = "mblexpremium";
-                var subscriptionInfo = inAppBillingService.GetProductInfoAsync(ItemType.Subscription, subscriptionProductId).Result;
-            }
-             
-           
+            await GetPurchase();
 
+        }
+
+        private async Task GetPurchase()
+        {
+            var productIds = new string[] { "mblexpremium" };
+            // Connect to the service here
+          var  connected = await CrossInAppBilling.Current.ConnectAsync();
+
+            // Check if there are pending orders, if so then subscribe
+            var purchasesInfo = await CrossInAppBilling.Current.GetProductInfoAsync(ItemType.Subscription, productIds);
+            var purchases = await CrossInAppBilling.Current.GetPurchasesAsync(ItemType.Subscription);
+            CrossInAppBilling.Current.DisconnectAsync();
         }
 
         private void OnSignupClicked(object sender, EventArgs e)
