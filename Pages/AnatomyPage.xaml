@@ -39,7 +39,7 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout Padding="10">
-                            <Label Text="{Binding Text}" TextColor="Black" FontAttributes="Bold" FontSize="Medium"/>
+                            <Label Text="{Binding Text}"  FontAttributes="Bold" FontSize="Medium"/>
                             <!-- Use a BindableLayout to generate radio buttons for choices -->
                             <StackLayout BindableLayout.ItemsSource="{Binding Choices}">
                                 <BindableLayout.ItemTemplate>

@@ -21,6 +21,7 @@ namespace MblexApp
             inAppBillingService = DependencyService.Get<IInAppBillingService>();
         }
         protected override void OnAppearing()
+
         {
             base.OnAppearing();
             var billing = CrossInAppBilling.Current;
