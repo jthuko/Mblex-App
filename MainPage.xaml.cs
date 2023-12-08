@@ -11,14 +11,12 @@ namespace MblexApp
     public partial class MainPage : ContentPage
     {
         int count = 0;
-        private readonly IInAppBillingService inAppBillingService;
+       
         public MainPage()
         {
             InitializeComponent();
             // Initialize in-app billing
-           
-            // Get the InAppBillingService instance using DependencyService
-            inAppBillingService = DependencyService.Get<IInAppBillingService>();
+                     
         }
         protected override async void OnAppearing()
 
@@ -36,6 +34,14 @@ namespace MblexApp
 
             // Check if there are pending orders, if so then subscribe
             var purchasesInfo = await CrossInAppBilling.Current.GetProductInfoAsync(ItemType.Subscription, productIds);
+            foreach (var item in purchasesInfo)
+            {
+                //item info here.
+                var name = item.Name;
+                var id = item.ProductId;
+                var cost = item.LocalizedPrice;
+            }
+
             var purchases = await CrossInAppBilling.Current.GetPurchasesAsync(ItemType.Subscription);
             CrossInAppBilling.Current.DisconnectAsync();
         }
