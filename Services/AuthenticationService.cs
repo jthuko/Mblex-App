@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MblexApp.Services
 {
-    public class AuthenticationService
+    public static class AuthenticationService
     {
         private const string SettingsKey = "UserSettings";
 

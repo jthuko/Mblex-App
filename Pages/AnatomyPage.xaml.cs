@@ -17,6 +17,8 @@ public partial class AnatomyPage : ContentPage
         BindingContext = viewModel;
         
     }
+
+
     private void RadioButton_CheckedChanged(object sender, CheckedChangedEventArgs e)
     {
         if (sender is RadioButton radioButton && e.Value)

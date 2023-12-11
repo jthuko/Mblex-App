@@ -12,5 +12,6 @@ namespace MblexApp.Models
         public string Password { get; set; }
         public DateTime LastLoginTime { get; set; }
         public bool IsPremium { get; set; }
+        public bool IsLoggedIn { get; set; }
     }
 }

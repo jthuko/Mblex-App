@@ -18,29 +18,15 @@ namespace MblexApp
             InitializeComponent();
             // Initialize in-app billing
                      
-        }
-        protected override async void OnAppearing()
-
+        }       
+       
+        private async void OnSignupClicked(object sender, EventArgs e)
         {
-            base.OnAppearing();
-            await GetPurchase();
 
+            await Navigation.PushAsync(new SignupPage());
         }
 
-        private async Task GetPurchase()
-        {
-            var productIds = new string[] { "mblexpremium" };
-            // Connect to the service here
-          var  product = await InAppBilling.GetProductInfoAsync(productIds);                 
-        }
-
-        private void OnSignupClicked(object sender, EventArgs e)
-        {       
-
-                App.Current.MainPage = new NavigationPage(new SignupPage());
-        }
-
-        private void OnLoginClicked(object sender, EventArgs e)
+        private async void OnLoginClicked(object sender, EventArgs e)
         {
             string usernameOrEmail = UsernameEntry.Text;
             string password = PasswordEntry.Text;
@@ -48,11 +34,13 @@ namespace MblexApp
             // Add your authentication logic here
             if (LoginUser(usernameOrEmail, password))
             {
-                DisplayAlert("Login Successful", "Welcome, " + usernameOrEmail + "!", "OK");
+               await DisplayAlert("Login Successful", "Welcome, " + usernameOrEmail + "!", "OK");
+                // Navigate to the Shell page named "YourShellPage"
+                await Shell.Current.GoToAsync("//AnatomyPage");
             }
             else
             {
-                DisplayAlert("Login Failed", "Invalid username or password", "OK");
+                await DisplayAlert("Login Failed", "Invalid username or password", "OK");
             }
         }
         private bool LoginUser(string usernameOrEmail, string password)
