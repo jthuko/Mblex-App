@@ -94,7 +94,7 @@ namespace MblexApp
                 else if(!action)
                 {
                     // Navigate to the Shell page named "YourShellPage"
-                    await Shell.Current.GoToAsync("//AppShell");
+                    await Shell.Current.GoToAsync("//AnatomyPage");
                 }
             }
         }
