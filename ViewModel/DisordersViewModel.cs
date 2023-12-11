@@ -1,6 +1,7 @@
 ﻿
 using MblexApp.Models;
 using MblexApp.Services;
+using MblexApp.StaticMethods;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -88,6 +89,7 @@ namespace MblexApp.ViewModel
                 {
                     PublicQuestions.Add(question);
                 }
+                CollectionShuffler.Shuffle(PublicQuestions);
             }
             else
             {
@@ -97,6 +99,7 @@ namespace MblexApp.ViewModel
                 {
                     PublicQuestions.Add(question);
                 }
+                CollectionShuffler.Shuffle(PublicQuestions);
             }
             IsBusy = false;
         }

@@ -1,6 +1,8 @@
 ﻿
 using MblexApp.Models;
 using MblexApp.Services;
+using MblexApp.StaticMethods;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -10,9 +12,10 @@ using System.Windows.Input;
 
 namespace MblexApp.ViewModel
 {
-
+    
     public class AnatomyViewModel:INotifyPropertyChanged
-    {
+    {       
+
         private ObservableCollection<PublicQuestion> publicQuestions;
         public ObservableCollection<PublicQuestion> PublicQuestions
         {
@@ -55,7 +58,20 @@ namespace MblexApp.ViewModel
                 }
             }
         }
-       
+
+        private ObservableCollection<PublicQuestion> shuffledPublicQuestions;
+        public ObservableCollection<PublicQuestion> ShuffledPublicQuestions
+        {
+            get { return shuffledPublicQuestions; }
+            set
+            {
+                if (shuffledPublicQuestions != value)
+                {
+                    shuffledPublicQuestions = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         private readonly AppService appService;
 
@@ -88,6 +104,8 @@ namespace MblexApp.ViewModel
                 {
                     PublicQuestions.Add(question);
                 }
+                CollectionShuffler.Shuffle(PublicQuestions);
+               
             }
             else
             {
@@ -97,11 +115,13 @@ namespace MblexApp.ViewModel
                 {
                     PublicQuestions.Add(question);
                 }
+
+                CollectionShuffler.Shuffle(PublicQuestions);
+
             }
             IsBusy = false;
         }
-
-
+       
         // Implement INotifyPropertyChanged interface for property change notification
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

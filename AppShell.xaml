@@ -10,10 +10,14 @@
                      Priority="1"
                      Order="Primary" Clicked="Upgrade_Clicked"
                      />
-        <ToolbarItem Text="Profile"
-                     Priority="2"
+        <ToolbarItem Text="Settings" 
+                     Priority="1"
                      Order="Secondary"
-                     />
+                     Clicked="Profile_Clicked"/>
+        <ToolbarItem x:Name="SigninSignout" Text="SignIn"
+             Priority="2"
+             Order="Secondary"
+             Clicked="SigninSignout_Clicked"/>
     </Shell.ToolbarItems>
     <ShellContent Title="Anatomy"
                  Icon="cat.png"

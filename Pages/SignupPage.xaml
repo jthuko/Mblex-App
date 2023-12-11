@@ -5,7 +5,6 @@
              x:Class="MblexApp.SignupPage">
     <NavigationPage.TitleView>
         <StackLayout Orientation="Horizontal">
-            <Button Text="Back" Clicked="OnBackClicked" />
             <Label Text="Sign Up" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
         </StackLayout>
     </NavigationPage.TitleView>

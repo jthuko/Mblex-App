@@ -39,10 +39,7 @@ public partial class SignupPage : ContentPage
             DisplayAlert("Signup Failed", "Username or email is already in use", "OK");
         }
     }
-    private void OnBackClicked(object sender, EventArgs e)
-    {
-        Navigation.PopAsync();
-    }
+   
 
 }
 

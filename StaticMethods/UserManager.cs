@@ -52,7 +52,9 @@ namespace MblexApp
                             Username = usernameOrEmail,
                             Password = storedPasswordHash,
                             LastLoginTime = DateTime.Now,
-                            IsPremium = userDetails.IsPremium
+                            IsPremium = userDetails.IsPremium,
+                            IsLoggedIn = true
+                            
                         };
 
                         AuthenticationService.SaveUserSettings(userSettings);
@@ -61,6 +63,7 @@ namespace MblexApp
                     {
                         // User settings already exist, update them
                         existingUserSettings.LastLoginTime = DateTime.Now;
+                        existingUserSettings.IsLoggedIn = true;
                         existingUserSettings.IsPremium = userDetails.IsPremium;
                         AuthenticationService.SaveUserSettings(existingUserSettings);
                     }
