@@ -9,6 +9,16 @@ namespace MblexApp.Models
 {
     public class InAppBillingProduct
     {
+        private object title;
+
+        public InAppBillingProduct(string productId, string description, string name, string localizedPrice)
+        {
+            ProductId = productId;
+            Description = description;
+            Name = name;
+            LocalizedPrice = localizedPrice;
+        }
+
         /// <summary>
         /// Name of the product
         /// </summary>
