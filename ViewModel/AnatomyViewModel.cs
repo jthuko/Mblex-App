@@ -80,6 +80,7 @@ namespace MblexApp.ViewModel
             // Retrieve public questions from the QuestionService
             PublicQuestions.Clear();
             IsBusy = true;
+            
             var publicQuestions = await appService.GetPublicQuestionsAsync(1);
             if(existingUserSettings != null && existingUserSettings.IsPremium)
             {

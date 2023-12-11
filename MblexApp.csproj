@@ -105,6 +105,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Maui" Version="6.0.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.11" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
 		<PackageReference Include="Plugin.InAppBilling" Version="7.1.0" />
@@ -112,6 +113,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Pages\SubscriptionPlansPage.xaml.cs">
+	    <DependentUpon>SubscriptionPlansPage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Pages\SignupPage.xaml.cs">
 	    <DependentUpon>SignupPage.xaml</DependentUpon>
 	  </Compile>
@@ -136,6 +140,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Pages\SubscriptionPlansPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\SignupPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -163,6 +170,12 @@
 	  <MauiXaml Update="Pages\SettingsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0-android33.0'">
+	  <PackageReference Include="PancakeViewCompat">
+	    <Version>7.0.0</Version>
+	  </PackageReference>
 	</ItemGroup>
 
 </Project>

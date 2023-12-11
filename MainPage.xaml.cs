@@ -1,6 +1,7 @@
 ﻿
 using MblexApp;
 using MblexApp.Services;
+using MblexApp.StaticMethods;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Maui.Controls;
@@ -30,20 +31,7 @@ namespace MblexApp
         {
             var productIds = new string[] { "mblexpremium" };
             // Connect to the service here
-          var  connected = await CrossInAppBilling.Current.ConnectAsync();
-
-            // Check if there are pending orders, if so then subscribe
-            var purchasesInfo = await CrossInAppBilling.Current.GetProductInfoAsync(ItemType.Subscription, productIds);
-            foreach (var item in purchasesInfo)
-            {
-                //item info here.
-                var name = item.Name;
-                var id = item.ProductId;
-                var cost = item.LocalizedPrice;
-            }
-
-            var purchases = await CrossInAppBilling.Current.GetPurchasesAsync(ItemType.Subscription);
-            CrossInAppBilling.Current.DisconnectAsync();
+          var  product = await InAppBilling.GetProductInfoAsync(productIds);                 
         }
 
         private void OnSignupClicked(object sender, EventArgs e)

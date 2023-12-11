@@ -39,7 +39,7 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout Padding="10">
-                            <Label Text="{Binding Text}" TextColor="Black" FontAttributes="Bold" FontSize="Medium" />
+                            <Label Text="{Binding Text}"  FontAttributes="Bold" FontSize="Medium" />
                             <RadioButton Content="{Binding Choices[0].ChoiceText}" Value="{Binding Choices[0].ChoiceText}" CheckedChanged="RadioButton_CheckedChanged" />
                             <RadioButton Content="{Binding Choices[1].ChoiceText}" Value="{Binding Choices[1].ChoiceText}" CheckedChanged="RadioButton_CheckedChanged" />
                             <RadioButton Content="{Binding Choices[2].ChoiceText}" Value="{Binding Choices[2].ChoiceText}" CheckedChanged="RadioButton_CheckedChanged" />
