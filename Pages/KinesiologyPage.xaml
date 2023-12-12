@@ -32,7 +32,7 @@
             </Grid.RowDefinitions>
 
             <!-- Add a Clear button with a click event handler in the first row -->
-            <Button Grid.Row="0" Text="Reset Questions" Clicked="Button_Clicked" Margin="2"/>
+            <Button Grid.Row="0" Text="Shuffle Questions" Clicked="Button_Clicked" Margin="2"/>
 
             <!-- CollectionView for displaying questions in the second row -->
             <CollectionView Grid.Row="1" x:Name="QuestionsListView" ItemsSource="{Binding PublicQuestions}" SelectionMode="None">
