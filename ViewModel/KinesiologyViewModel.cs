@@ -86,6 +86,7 @@ namespace MblexApp.ViewModel
                     PublicQuestions.Add(question);
                 }
                 CollectionShuffler.Shuffle(PublicQuestions);
+                KeepElements.KeepAtMostNElements(PublicQuestions, 10);
             }
             else
             {
@@ -96,6 +97,7 @@ namespace MblexApp.ViewModel
                     PublicQuestions.Add(question);
                 }
                 CollectionShuffler.Shuffle(PublicQuestions);
+                KeepElements.KeepAtMostNElements(PublicQuestions, 5);
             }
             IsBusy = false;
         }

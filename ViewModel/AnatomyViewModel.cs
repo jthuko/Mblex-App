@@ -105,7 +105,7 @@ namespace MblexApp.ViewModel
                     PublicQuestions.Add(question);
                 }
                 CollectionShuffler.Shuffle(PublicQuestions);
-               
+                KeepElements.KeepAtMostNElements(PublicQuestions, 10);
             }
             else
             {
@@ -117,11 +117,14 @@ namespace MblexApp.ViewModel
                 }
 
                 CollectionShuffler.Shuffle(PublicQuestions);
+                KeepElements.KeepAtMostNElements(PublicQuestions, 5);               
 
             }
             IsBusy = false;
         }
+
        
+
         // Implement INotifyPropertyChanged interface for property change notification
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
