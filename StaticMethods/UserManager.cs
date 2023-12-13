@@ -118,6 +118,112 @@ namespace MblexApp
             }
         }
 
+        public static bool UpdatePremiumForUser(string username, bool isPremium)
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                // Check if the username exists (using IsUsernameOrEmailInUse method)
+                if (!IsUsernameOrEmailInUse(connection, username, ""))
+                {
+                    return false; // Username does not exist
+                }
+
+                // Update IsPremium using parameterized SQL UPDATE statement
+                string updateQuery = "UPDATE Users SET IsPremium = @IsPremium WHERE Username = @Username";
+
+                using (var command = new SqlCommand(updateQuery, connection))
+                {
+                    command.Parameters.AddWithValue("@Username", username);
+                    command.Parameters.AddWithValue("@IsPremium", isPremium ? 1 : 0);
+
+                    command.ExecuteNonQuery();
+                }
+
+                return true; // IsPremium was successfully updated
+            }
+        }
+
+        public static bool UpdateUsernameOrEmail(string currentUsername, string newUsername, string newEmail)
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                // Check if the new username or email is already in use
+                if (IsUsernameOrEmailInUse(connection, newUsername, newEmail))
+                {
+                    return false; // New username or email is already in use
+                }
+
+                // Update username and/or email using parameterized SQL UPDATE statement
+                string updateQuery = "UPDATE Users SET ";
+
+                if (!string.IsNullOrEmpty(newUsername))
+                {
+                    updateQuery += "Username = @NewUsername";
+                }
+
+                if (!string.IsNullOrEmpty(newEmail))
+                {
+                    updateQuery += string.IsNullOrEmpty(newUsername) ? "" : ", ";
+                    updateQuery += "Email = @NewEmail";
+                }
+
+                updateQuery += " WHERE Username = @CurrentUsername";
+
+                using (var command = new SqlCommand(updateQuery, connection))
+                {
+                    command.Parameters.AddWithValue("@CurrentUsername", currentUsername);
+
+                    if (!string.IsNullOrEmpty(newUsername))
+                    {
+                        command.Parameters.AddWithValue("@NewUsername", newUsername);
+                    }
+
+                    if (!string.IsNullOrEmpty(newEmail))
+                    {
+                        command.Parameters.AddWithValue("@NewEmail", newEmail);
+                    }
+
+                    command.ExecuteNonQuery();
+                }
+
+                return true; // Username and/or email were successfully updated
+            }
+        }
+
+        public static bool UpdateUserPassword(string username, string newPassword)
+        {
+            // Hash the new password
+            string newPasswordHash = HashPassword(newPassword);
+
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                // Check if the username exists (using IsUsernameOrEmailInUse method)
+                if (!IsUsernameOrEmailInUse(connection, username, ""))
+                {
+                    return false; // Username does not exist
+                }
+
+                // Update user password using parameterized SQL UPDATE statement
+                string updateQuery = "UPDATE Users SET PasswordHash = @NewPasswordHash WHERE Username = @Username";
+
+                using (var command = new SqlCommand(updateQuery, connection))
+                {
+                    command.Parameters.AddWithValue("@Username", username);
+                    command.Parameters.AddWithValue("@NewPasswordHash", newPasswordHash);
+
+                    command.ExecuteNonQuery();
+                }
+
+                return true; // User password was successfully updated
+            }
+        }
+
         private static bool IsUsernameOrEmailInUse(SqlConnection connection, string username, string email)
         {
             // Define a SELECT query to check if the username or email exists in the Users table.
