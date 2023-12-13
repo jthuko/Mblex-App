@@ -39,16 +39,4 @@
                 Icon="cat.png"
                 ContentTemplate="{DataTemplate local:TechniquesPage}"
                 Route="TechniquesPage" />
-    <ShellContent Title="My Content"
-                 Icon="dog.png"
-                 ContentTemplate="{DataTemplate local:MyContent}" 
-                  Route="MyContent" />
-    <ShellContent Title="Settings"
-             Icon="dog.png"
-             ContentTemplate="{DataTemplate local:SettingsPage}" 
-              Route="SettingsPage" />
-    <ShellContent
-        Title="Log In"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
 </Shell>

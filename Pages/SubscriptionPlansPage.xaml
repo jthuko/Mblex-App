@@ -33,7 +33,18 @@
                         <Frame>
                             <StackLayout>
                                 <Label Text="{Binding Name}"  FontAttributes="Bold" FontSize="Medium"/>
-                                <Label Text="{Binding LocalizedPrice}"  FontAttributes="Bold" FontSize="Medium"/>
+                                <Label  Text="***Benefits**" Margin="0,5,0,5" FontAttributes="Bold" FontSize="Medium" HorizontalOptions="Center"/>
+                                <Label Margin="10,0,0,0" Text="&#x2022; Unlimited Access to over 2000 Multi Choice Questions"  FontSize="Medium"/>
+                                <Label  Text="***Coming Soon!**" Margin="0,5,0,0"  FontAttributes="Bold" FontSize="Medium" HorizontalOptions="Center"/>
+                                <Label Margin="10,0,0,0" Text="&#x2022; Flashcards"   FontSize="Medium"/>
+                                <Label Margin="10,0,0,0" Text="&#x2022; Create and share Questions and Flashcards"   FontSize="Medium"/>
+                                <Label Margin="10,0,0,0" Text="&#x2022; Create Notes"   FontSize="Medium"/>
+                                <Label Margin="10,0,0,0" Text="&#x2022; Generate Questions/Flashcards using AI and Save them"   FontSize="Medium"/>
+                                <Label Margin="10,0,0,0" Text="&#x2022; Create Study groups with other users"   FontSize="Medium"/>
+                                <Label Margin="10,0,0,0" Text="&#x2022; Chat"  FontSize="Medium"/>
+                                <Label Margin="10,0,0,0" Text="&#x2022; Educational Videos"  FontSize="Medium"/>
+                                <Label Text="{Binding LocalizedPrice, StringFormat='Monthly subscription: {0:C2}. Unsubscribe anytime'}" Margin="5"  FontAttributes="Bold" FontSize="Medium"/>
+                                <Button Text="Subscribe" HorizontalOptions="Center" Clicked="SubscriptionButton_Clicked"/>
                             </StackLayout>
                         </Frame>
                     </DataTemplate>
