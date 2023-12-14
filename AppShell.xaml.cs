@@ -11,7 +11,7 @@ namespace MblexApp
             InitializeComponent();
 
             var existingUserSettings = AuthenticationService.GetUserSettings();
-            if(existingUserSettings != null && existingUserSettings.IsPremium)
+            if(existingUserSettings != null && existingUserSettings.IsPremium && existingUserSettings.IsLoggedIn)
             {
                 Upgrade.Text = "Unsubscribe";
             }
@@ -20,7 +20,7 @@ namespace MblexApp
                 Upgrade.Text = "Subscribe";
             } 
             
-            if(existingUserSettings != null && existingUserSettings.IsLoggedIn == true && existingUserSettings.LastLoginTime >= DateTime.Now.AddDays(-3))
+            if(existingUserSettings != null && existingUserSettings.IsLoggedIn && existingUserSettings.LastLoginTime >= DateTime.Now.AddDays(-3))
             {
                 SigninSignout.Text = "Logout";
             }
@@ -44,9 +44,10 @@ namespace MblexApp
             Label label = sender as Label;
             if(label != null &&  label.Text == "Unsubscribe")
             {
-                //1. set settings to isPremium = false
-                //2. Set user.ispremium = false
-                //3. Unscubsribe inAppBilling
+                //1. Unscubsribe inAppBilling
+                //2. set settings to isPremium = false
+                //3. Set user.ispremium = false
+
             }
             else
             {
