@@ -97,6 +97,7 @@
 	<ItemGroup>
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\appicon.jpg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+		<MauiSplashScreen Include="Platforms\iOS\Resources\appicon.jpg" />
 		<MauiSplashScreen Include="Resources\Splash\appicon.jpg" />
 
 		<!-- Splash Screen -->
@@ -111,6 +112,10 @@
 
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <BundleResource Remove="Platforms\iOS\Resources\appicon.jpg" />
 	</ItemGroup>
 
 	<ItemGroup>
