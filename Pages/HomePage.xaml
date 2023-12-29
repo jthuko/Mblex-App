@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MblexApp"
+             x:Class="MblexApp.HomePage">
+    <NavigationPage.TitleView>
+        <StackLayout Orientation="Horizontal">
+            <Label Text="Home Page" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
+        </StackLayout>
+    </NavigationPage.TitleView>
+    <ScrollView>
+        <StackLayout Padding="0,0,15,0">
+            <CollectionView x:Name="SubjectList">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="2" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame CornerRadius="13" HorizontalOptions="Start" BorderColor="#c6c1ea" HasShadow="False">
+                            <Grid RowDefinitions="*,Auto">
+                                <Image Source="{Binding ImageSource}" HorizontalOptions="Center" HeightRequest="40" WidthRequest="40" />
+                                <Label Grid.Row="1" HorizontalOptions="Center" Text="{Binding FileName}" FontSize="11" TextColor="#c6c1ea"/>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

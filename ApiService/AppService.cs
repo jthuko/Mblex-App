@@ -363,6 +363,104 @@ public class AppService
             HandleDatabaseConnectionError(ex);
         }
     }
+    public void AddUserQuestions(List<UserQuestions> userQuestions)
+    {
+        try
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                foreach (UserQuestions userQuestion in userQuestions)
+                {
+                    // Step 1: Insert the question into the UserQuestions table
+                    string insertQuestionQuery = "INSERT INTO UserQuestions (Text, IsPublic, UserID, SubjectID) " +
+                        "VALUES (@Text, @IsPublic, @UserID, @SubjectID); SELECT SCOPE_IDENTITY();";
+
+                    using (SqlCommand insertQuestionCommand = new SqlCommand(insertQuestionQuery, connection))
+                    {
+                        insertQuestionCommand.Parameters.AddWithValue("@Text", userQuestion.Text);
+                        insertQuestionCommand.Parameters.AddWithValue("@IsPublic", userQuestion.IsPublic);
+                        insertQuestionCommand.Parameters.AddWithValue("@UserID", userQuestion.UserID ?? (object)DBNull.Value);
+                        insertQuestionCommand.Parameters.AddWithValue("@SubjectID", userQuestion.SubjectID);
+
+                        // Get the new question's ID
+                        int newQuestionID = Convert.ToInt32(insertQuestionCommand.ExecuteScalar());
+
+                        // Step 2: Insert choices into the Choices table
+                        string insertChoicesQuery = "INSERT INTO Choices (QuestionID, ChoiceText, IsCorrect) VALUES (@QuestionID, @ChoiceText, @IsCorrect)";
+
+                        foreach (Choice choice in userQuestion.Choices)
+                        {
+                            using (SqlCommand insertChoicesCommand = new SqlCommand(insertChoicesQuery, connection))
+                            {
+                                insertChoicesCommand.Parameters.AddWithValue("@QuestionID", newQuestionID);
+                                insertChoicesCommand.Parameters.AddWithValue("@ChoiceText", choice.ChoiceText);
+                                insertChoicesCommand.Parameters.AddWithValue("@IsCorrect", choice.IsCorrect);
+
+                                insertChoicesCommand.ExecuteNonQuery();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        catch (SqlException ex)
+        {
+            // Handle the SQL exception
+            HandleDatabaseConnectionError(ex);
+        }
+        catch (Exception ex)
+        {
+            // Handle other exceptions
+            HandleDatabaseConnectionError(ex);
+        }
+    }
+    public List<SubjectModel> GetSubjects()
+    {
+        List<SubjectModel> subjects = new List<SubjectModel>();
+
+        try
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                // Select subjects and their names from the Subjects table
+                string selectSubjectsQuery = "SELECT Id, Name FROM Subjects";
+
+                using (SqlCommand selectSubjectsCommand = new SqlCommand(selectSubjectsQuery, connection))
+                {
+                    using (SqlDataReader reader = selectSubjectsCommand.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            SubjectModel subject = new SubjectModel
+                            {
+                                Id = Convert.ToInt32(reader["Id"]),
+                                Name = Convert.ToString(reader["Name"])
+                            };
+
+                            subjects.Add(subject);
+                        }
+                    }
+                }
+            }
+        }
+        catch (SqlException ex)
+        {
+            // Handle the SQL exception
+            HandleDatabaseConnectionError(ex);
+        }
+        catch (Exception ex)
+        {
+            // Handle other exceptions
+            HandleDatabaseConnectionError(ex);
+        }
+
+        return subjects;
+    }
+
 
     private void HandleDatabaseConnectionError(Exception ex)
     {
