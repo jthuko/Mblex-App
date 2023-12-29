@@ -131,6 +131,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Pages\HomePage.xaml.cs">
+	    <DependentUpon>HomePage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Pages\AddQuestionsPage.xaml.cs">
+	    <DependentUpon>AddQuestionsPage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Pages\SubscriptionPlansPage.xaml.cs">
 	    <DependentUpon>SubscriptionPlansPage.xaml</DependentUpon>
 	  </Compile>
@@ -158,6 +164,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Pages\HomePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\AddQuestionsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\SubscriptionPlansPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

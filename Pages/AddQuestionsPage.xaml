@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MblexApp"
+             x:Class="MblexApp.AddQuestionsPage">
+    <NavigationPage.TitleView>
+        <StackLayout Orientation="Horizontal">
+            <Label Text="Sign Up" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
+        </StackLayout>
+    </NavigationPage.TitleView>
+    <ScrollView>
+        <VerticalStackLayout
+   Spacing="25"
+   Padding="30,0"
+   VerticalOptions="Center" x:Name="QuestionsStackLayout">
+            <Entry x:Name="Question" Placeholder="Question" />
+            <Entry x:Name="ChoiceOne" Placeholder="ChoiceOne" />
+            <Entry x:Name="ChoiceTwo" Placeholder="ChoiceTwo"/>
+            <Entry x:Name="ChoiceThree" Placeholder="ChoiceThree" />
+            <Picker x:Name="CorrectAnswerPicker" Title="Select Correct Answer">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>ChoiceOne</x:String>
+                        <x:String>ChoiceTwo</x:String>
+                        <x:String>ChoiceThree</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+            <!-- Add more questions dynamically -->
+            <Button Text="Add More Questions"
+                        Clicked="OnAddQuestionClicked"
+                        HorizontalOptions="Center" />
+
+            <!-- Save questions button -->
+            <Button Text="Save Questions"
+                        Clicked="OnSaveQuestionsClicked"
+                        HorizontalOptions="Center" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
