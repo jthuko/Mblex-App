@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MblexApp.Models
 {
-    public class UserQuestion
+    public class UserQuestions
     {
         public int QuestionID { get; set; }
         public string Text { get; set; }
