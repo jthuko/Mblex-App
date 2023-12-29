@@ -12,7 +12,7 @@ namespace MblexApp.ViewModel
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ObservableCollection<UserQuestion> UserQuestions { get; set; }
+        public ObservableCollection<UserQuestions> UserQuestions { get; set; }
         public int UserId { get; private set; }
 
         private bool isAnswerCorrect;
@@ -34,21 +34,21 @@ namespace MblexApp.ViewModel
             throw new NotImplementedException();
         }
 
-        private UserQuestion  currentQuestion; // Keep track of the current question
+        private UserQuestions  currentQuestion; // Keep track of the current question
 
         public ICommand SelectAnswerCommand { get; private set; }
 
         public UserViewModel(AppService appService)
         {
             this.appService = appService;
-            UserQuestions = new ObservableCollection<UserQuestion>();
+            UserQuestions = new ObservableCollection<UserQuestions>();
           //  LoadUserQuestions();
            
         }
        
 
         // Implement the logic to obtain the current question based on the selectedChoiceIndex
-        private UserQuestion GetCurrentQuestion(int selectedChoiceIndex)
+        private UserQuestions GetCurrentQuestion(int selectedChoiceIndex)
         {
             // Replace this with your actual logic to obtain the current question.
             // You might use the selectedChoiceIndex or other criteria to determine the current question.
