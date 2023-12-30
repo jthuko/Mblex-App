@@ -19,10 +19,23 @@ public partial class EthicsPage : ContentPage
     }
     private void RadioButton_CheckedChanged(object sender, CheckedChangedEventArgs e)
     {
+
         if (sender is RadioButton radioButton && e.Value)
         {
             string selectedValue = (string)radioButton.Value;
-            PublicQuestion selectedQuestion = radioButton.BindingContext as PublicQuestion;
+            // Find the parent container (StackLayout) that has the PublicQuestion as its BindingContext
+            //  var stackLayout = FindParentStackLayout(radioButton);
+            PublicQuestion selectedQuestion = null;
+            // PublicQuestion selectedQuestion = radioButton.BindingContext as PublicQuestion;
+
+            if (radioButton.Parent is StackLayout stackLayout)
+            {
+                // Access the PublicQuestion from the BindingContext of the parent StackLayout
+                if (stackLayout.BindingContext is PublicQuestion SelectedQuestion)
+                {
+                    selectedQuestion = SelectedQuestion;
+                }
+            }
 
             if (selectedQuestion != null)
             {

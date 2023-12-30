@@ -53,7 +53,7 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
             <!-- Add an ActivityIndicator in the third row, centered horizontally and vertically -->
-            <ActivityIndicator Grid.Row="1" IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Color="Green"
+            <ActivityIndicator Grid.Row="1" IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"
                            VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" />
         </Grid>
     </ContentPage.Content>
