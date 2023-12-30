@@ -3,8 +3,12 @@
     x:Class="MblexApp.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:local="clr-namespace:MblexApp"
     Shell.FlyoutBehavior="Flyout">
+    <Shell.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="{AppThemeBinding Light=White, Dark=Black}" StatusBarStyle="{AppThemeBinding Light=DarkContent, Dark=LightContent}" />
+    </Shell.Behaviors>
     <Shell.ToolbarItems>
         <ToolbarItem x:Name="Upgrade" Text="Upgrade"
                      Priority="1"
