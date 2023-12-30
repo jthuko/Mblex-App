@@ -427,7 +427,7 @@ public class AppService
                 connection.Open();
 
                 // Select subjects and their names from the Subjects table
-                string selectSubjectsQuery = "SELECT Id, Name FROM Subjects";
+                string selectSubjectsQuery = "SELECT SubjectID, SubjectText FROM Subjects";
 
                 using (SqlCommand selectSubjectsCommand = new SqlCommand(selectSubjectsQuery, connection))
                 {
@@ -437,8 +437,8 @@ public class AppService
                         {
                             SubjectModel subject = new SubjectModel
                             {
-                                Id = Convert.ToInt32(reader["Id"]),
-                                Name = Convert.ToString(reader["Name"])
+                                Id = Convert.ToInt32(reader["SubjectID"]),
+                                Name = Convert.ToString(reader["SubjectText"])
                             };
 
                             subjects.Add(subject);
