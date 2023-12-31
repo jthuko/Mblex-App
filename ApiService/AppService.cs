@@ -374,7 +374,7 @@ public class AppService
                 foreach (UserQuestions userQuestion in userQuestions)
                 {
                     // Step 1: Insert the question into the UserQuestions table
-                    string insertQuestionQuery = "INSERT INTO UserQuestions (Text, IsPublic, UserID, SubjectID) " +
+                    string insertQuestionQuery = "INSERT INTO PublicQuestions (Text, IsPublic, UserID, SubjectID) " +
                         "VALUES (@Text, @IsPublic, @UserID, @SubjectID); SELECT SCOPE_IDENTITY();";
 
                     using (SqlCommand insertQuestionCommand = new SqlCommand(insertQuestionQuery, connection))
