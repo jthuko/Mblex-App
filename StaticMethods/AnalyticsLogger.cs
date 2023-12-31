@@ -33,7 +33,7 @@ namespace MblexPrep
         {
             string installFlagKey = "IsInstallLogged";
             var settingsJson = SecureStorage.GetAsync(installFlagKey).Result;
-            if (!string.IsNullOrEmpty(settingsJson))
+            if (string.IsNullOrEmpty(settingsJson))
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
@@ -43,11 +43,12 @@ namespace MblexPrep
 
                     // Get the device type
                     string deviceType = DeviceInfo.DeviceType.ToString();
-
-                    string insertQuery = "INSERT INTO InstallLogs (NewInstall, InstallDate, DeviceType) VALUES (1, @InstallDate, @DeviceType)";
+                    string appName = AppInfo.Name;
+                    string insertQuery = "INSERT INTO InstallLogs (AppName, InstallDate, DeviceType) VALUES (@AppName, @InstallDate, @DeviceType)";
 
                     using (SqlCommand cmd = new SqlCommand(insertQuery, connection))
                     {
+                        cmd.Parameters.AddWithValue("@AppName", appName);
                         cmd.Parameters.AddWithValue("@InstallDate", installTimestamp);
                         cmd.Parameters.AddWithValue("@DeviceType", deviceType);
 

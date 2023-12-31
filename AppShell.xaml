@@ -20,7 +20,7 @@
                      Clicked="Profile_Clicked"/>
         <ToolbarItem x:Name="SigninSignout" Text="SignIn"
              Priority="2"
-             Order="Secondary"
+             Order="Primary"
              Clicked="SigninSignout_Clicked"/>
     </Shell.ToolbarItems>
     <ShellContent Title="HomePage"

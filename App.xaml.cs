@@ -1,5 +1,6 @@
 ﻿using MblexApp.Models;
 using MblexApp.Services;
+using MblexPrep;
 using Plugin.InAppBilling;
 
 namespace MblexApp
@@ -10,6 +11,8 @@ namespace MblexApp
         {
             InitializeComponent();
 
+            // Log install event when the app starts
+            AnalyticsLogger.LogInstall();
             MainPage = new AppShell();
         }
         protected override void OnStart()

@@ -3,6 +3,7 @@ using MblexApp.Models;
 using MblexApp.Services;
 using MblexApp.StaticMethods;
 using MblexApp.ViewModel;
+using MblexPrep;
 namespace MblexApp;
 
 public partial class SubscriptionPlansPage : ContentPage
@@ -14,7 +15,9 @@ public partial class SubscriptionPlansPage : ContentPage
         InitializeComponent();
        
         viewModel = new SubscriptionViewModel();
-        BindingContext = viewModel;      
+        BindingContext = viewModel;
+        // Log a page visit
+        AnalyticsLogger.LogPageVisit("SubscriptionsPage");
     }
 
     private async void SubscriptionButton_Clicked(object sender, EventArgs e)
