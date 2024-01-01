@@ -48,13 +48,12 @@ namespace MblexApp
                     {
                         // User settings do not exist, save them
                         var userSettings = new UserSettings
-                        {
+                        {                            
                             Username = usernameOrEmail,
                             Password = storedPasswordHash,
                             LastLoginTime = DateTime.Now,
                             IsPremium = userDetails.IsPremium,
-                            IsLoggedIn = true
-                            
+                            IsLoggedIn = true                           
                         };
 
                         AuthenticationService.SaveUserSettings(userSettings);

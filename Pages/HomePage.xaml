@@ -5,7 +5,7 @@
              x:Class="MblexApp.HomePage">
     <NavigationPage.TitleView>
         <StackLayout Orientation="Horizontal">
-            <Label Text="Home Page" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
+            <Label Text="My Content" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
         </StackLayout>
     </NavigationPage.TitleView>
     <ContentPage.Content>
@@ -17,10 +17,13 @@
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Frame CornerRadius="13" HorizontalOptions="Start" BorderColor="#c6c1ea" HasShadow="False" Margin="5" HeightRequest="150" WidthRequest="150">
-                                <Grid RowDefinitions="Auto,Auto">
+                            <Frame CornerRadius="13" HorizontalOptions="Start" BorderColor="#c6c1ea" HasShadow="True" Margin="5" HeightRequest="150" WidthRequest="150">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+                                </Frame.GestureRecognizers>
+                                <Grid RowDefinitions="*,Auto">
                                     <Image Source="{Binding ImageSource}" HorizontalOptions="Center" HeightRequest="40" WidthRequest="40" />
-                                    <Label Grid.Row="1" HorizontalOptions="Center" Text="{Binding Name}" />
+                                    <Label Grid.Row="1" HorizontalOptions="Center" Text="{Binding Name}" HorizontalTextAlignment="Center" />
                                 </Grid>
                             </Frame>
                         </DataTemplate>

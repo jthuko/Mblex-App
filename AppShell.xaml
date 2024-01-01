@@ -23,14 +23,6 @@
              Order="Primary"
              Clicked="SigninSignout_Clicked"/>
     </Shell.ToolbarItems>
-    <ShellContent Title="HomePage"
-         Icon="cat.png"
-         ContentTemplate="{DataTemplate local:FlashCardsPage}"
-          Route="FlashCardsPage" />
-    <ShellContent Title="Flashcarda"
-             Icon="cat.png"
-             ContentTemplate="{DataTemplate local:HomePage}"
-              Route="HomePage" />
     <ShellContent Title="Anatomy"
                  Icon="cat.png"
                  ContentTemplate="{DataTemplate local:AnatomyPage}"
@@ -55,4 +47,8 @@
              Icon="cat.png"
              ContentTemplate="{DataTemplate local:EthicsPage}"
               Route="EthicsPage" />
+    <ShellContent Title="MyContent"
+          Icon="cat.png"
+          ContentTemplate="{DataTemplate local:HomePage}"
+           Route="MyContent" />
 </Shell>

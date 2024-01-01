@@ -39,6 +39,7 @@ public class AppService
                             PublicQuestion question = new PublicQuestion
                             {
                                 QuestionID = questionReader.GetInt32(questionReader.GetOrdinal("QuestionID")),
+                                Username = questionReader.IsDBNull(questionReader.GetOrdinal("Username")) ? (string)null : questionReader.GetString(questionReader.GetOrdinal("Username")),
                                 Text = questionReader.GetString(questionReader.GetOrdinal("Text")),
                                 IsPublic = questionReader.GetBoolean(questionReader.GetOrdinal("IsPublic")),
                                 UserID = questionReader.IsDBNull(questionReader.GetOrdinal("UserID")) ? (int?)null : questionReader.GetInt32(questionReader.GetOrdinal("UserID")),

@@ -30,8 +30,21 @@ public partial class HomePage : ContentPage
         // Load data to be displayed on the page
         // For example, you might fetch data from a service or a database
         // and update the UI accordingly
+        
         return appService.GetSubjects();
     }
 
+    private async void TapGestureRecognizer_Tapped(object sender, TappedEventArgs e)
+    {
+        if (sender is Frame tappedFrame)
+        {
+            if (tappedFrame.BindingContext is SubjectModel subjectModel)
+            {
+                int tappedSubjectId = subjectModel.Id;
+                await Navigation.PushAsync(new UserQuestionsPage(tappedSubjectId));
+            }
+        }
+      
+    }
 }
 

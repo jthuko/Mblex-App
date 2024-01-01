@@ -8,6 +8,7 @@ namespace MblexApp.Models
 {
     public class UserQuestions
     {
+        
         public int QuestionID { get; set; }
         public string Text { get; set; }
         public bool IsPublic { get; set; }

@@ -11,6 +11,7 @@ namespace MblexApp.Models
     //Main public questions list
     public class PublicQuestion
     {
+        public string Username { get; set; }
         public int QuestionID { get; set; }
         public string Text { get; set; }
         public bool IsPublic { get; set; }
