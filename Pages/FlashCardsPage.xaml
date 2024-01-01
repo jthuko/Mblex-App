@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:local="clr-namespace:MblexPrep"
+             x:Class="MblexApp.FlashCardsPage">
+    <ContentPage.Resources>
+        <local:FlipConverter x:Key="FlipConverter"/>
+    </ContentPage.Resources>
+
+    <Grid>
+        <CollectionView ItemsSource="{Binding Flashcards}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+               x:Name="collectionView"       >
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <ContentView>
+                        <Frame x:Name="FlashcardFrame" CornerRadius="10" IsClippedToBounds="True" BackgroundColor="LightGray">
+                            <Label Text="{Binding IsFlipped, Converter={StaticResource FlipConverter}, ConverterParameter={x:Reference FlashcardFrame}}" 
+                                   TextColor="Black" FontSize="20" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+                        </Frame>
+                    </ContentView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="End">
+            <Button Text="Back" Clicked="OnBackButtonClicked" />
+            <Button Text="Forward" Clicked="OnForwardButtonClicked" />
+        </StackLayout>
+    </Grid>
+</ContentPage>

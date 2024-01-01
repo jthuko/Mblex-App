@@ -37,6 +37,7 @@ namespace MblexPrep
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
+                    
                     connection.Open();
 
                     DateTime installTimestamp = DateTime.UtcNow;

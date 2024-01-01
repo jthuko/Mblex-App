@@ -24,6 +24,10 @@
              Clicked="SigninSignout_Clicked"/>
     </Shell.ToolbarItems>
     <ShellContent Title="HomePage"
+         Icon="cat.png"
+         ContentTemplate="{DataTemplate local:FlashCardsPage}"
+          Route="FlashCardsPage" />
+    <ShellContent Title="Flashcarda"
              Icon="cat.png"
              ContentTemplate="{DataTemplate local:HomePage}"
               Route="HomePage" />
