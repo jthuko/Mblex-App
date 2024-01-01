@@ -460,69 +460,9 @@ public class AppService
 
         return subjects;
     }
-    public void CreateFlashCards(List<FlashCards> flashCards)
-    {
-        using (SqlConnection connection = new SqlConnection(connectionString))
-        {
-            connection.Open();
-
-            string query = "INSERT INTO FlashCards (FlashcardID, QuestionText, AnswerText, IsPublic, UserID, SubjectID) " +
-                           "VALUES (@FlashcardID, @QuestionText, @AnswerText, @IsPublic, @UserID, @SubjectID)";
-
-            foreach (var flashCard in flashCards)
-            {
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@FlashcardID", flashCard.FlashcardID);
-                    command.Parameters.AddWithValue("@QuestionText", flashCard.QuestionText);
-                    command.Parameters.AddWithValue("@AnswerText", flashCard.AnswerText);
-                    command.Parameters.AddWithValue("@IsPublic", flashCard.IsPublic);
-                    command.Parameters.AddWithValue("@UserID", (object)flashCard.UserID ?? DBNull.Value);
-                    command.Parameters.AddWithValue("@SubjectID", flashCard.SubjectID);
-
-                    command.ExecuteNonQuery();
-                }
-            }
-        }
-    }
-    public List<FlashCards> GetFlashCards()
-    {
-        List<FlashCards> flashCards = new List<FlashCards>();
-
-        using (SqlConnection connection = new SqlConnection(connectionString))
-        {
-            connection.Open();
-
-            string query = "SELECT * FROM FlashCards";
-
-            using (SqlCommand command = new SqlCommand(query, connection))
-            {
-                using (SqlDataReader reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        FlashCards flashCard = new FlashCards
-                        {
-                            FlashcardID = (int)reader["FlashcardID"],
-                            QuestionText = reader["QuestionText"].ToString(),
-                            AnswerText = reader["AnswerText"].ToString(),
-                            IsPublic = (bool)reader["IsPublic"],
-                            UserID = reader["UserID"] != DBNull.Value ? (int?)reader["UserID"] : null,
-                            SubjectID = (int)reader["SubjectID"]
-                        };
-
-                        flashCards.Add(flashCard);
-                    }
-                }
-            }
-        }
-
-        return flashCards;
-    }
 
 
-
-private void HandleDatabaseConnectionError(Exception ex)
+    private void HandleDatabaseConnectionError(Exception ex)
     {
         // You can log the exception for debugging purposes
         Console.WriteLine($"Database connection error: {ex.Message}");
