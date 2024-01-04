@@ -108,5 +108,9 @@ public partial class UserQuestionsPage : ContentPage
         }
     }
 
+    private async void AddQuestionsButton_Clicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new AddQuestionsPage(SubjectID));
+    }
 }
 

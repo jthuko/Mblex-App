@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:MblexApp"
+             xmlns:local="clr-namespace:MblexApp"            
              x:Class="MblexApp.UserQuestionsPage">
     <ContentPage.Resources>
         <local:BoolToInverseBoolConverter x:Key="BoolToInverseBoolConverter" />
@@ -22,39 +22,53 @@
                Text="Kinesiology"/>
     </NavigationPage.TitleView>
     <ContentPage.Content>
-        <!-- Use a Grid layout with two rows -->
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <!-- Auto-sized row for the button -->
                 <RowDefinition Height="*"/>
-                <!-- Star-sized row for the CollectionView to fill remaining space -->
             </Grid.RowDefinitions>
+            <!-- Use a Grid layout with two rows -->
+            <Grid Grid.Row="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <!-- Auto-sized row for the button -->
+                    <RowDefinition Height="*"/>
+                    <!-- Star-sized row for the CollectionView to fill remaining space -->
+                </Grid.RowDefinitions>
 
-            <!-- Add a Clear button with a click event handler in the first row -->
-            <Button Grid.Row="0" Text="Shuffle Questions" Clicked="Button_Clicked" Margin="2"/>
+                <!-- Add a Clear button with a click event handler in the first row -->
+                <Button Grid.Row="0" Text="Shuffle Questions" Clicked="Button_Clicked" Margin="2"/>
 
-            <!-- CollectionView for displaying questions in the second row -->
-            <CollectionView Grid.Row="1" x:Name="QuestionsListView" ItemsSource="{Binding PublicQuestions}" SelectionMode="None">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <StackLayout Padding="10">
-                            <Label Text="{Binding Text}"  FontAttributes="Bold" FontSize="Medium"/>
-                            <!-- Use a BindableLayout to generate radio buttons for choices -->
-                            <StackLayout BindableLayout.ItemsSource="{Binding Choices}">
-                                <BindableLayout.ItemTemplate>
-                                    <DataTemplate>
-                                        <RadioButton Content="{Binding ChoiceText}" Value="{Binding ChoiceText}" CheckedChanged="RadioButton_CheckedChanged" />
-                                    </DataTemplate>
-                                </BindableLayout.ItemTemplate>
+                <!-- CollectionView for displaying questions in the second row -->
+                <CollectionView Grid.Row="1" x:Name="QuestionsListView" ItemsSource="{Binding PublicQuestions}" SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout Padding="10">
+                                <Label Text="{Binding Text}"  FontAttributes="Bold" FontSize="Medium"/>
+                                <!-- Use a BindableLayout to generate radio buttons for choices -->
+                                <StackLayout BindableLayout.ItemsSource="{Binding Choices}">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate>
+                                            <RadioButton Content="{Binding ChoiceText}" Value="{Binding ChoiceText}" CheckedChanged="RadioButton_CheckedChanged" />
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </StackLayout>
                             </StackLayout>
-                        </StackLayout>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-            <!-- Add an ActivityIndicator in the third row, centered horizontally and vertically -->
-            <ActivityIndicator Grid.Row="1" IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Color="Green"
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                <!-- Add an ActivityIndicator in the third row, centered horizontally and vertically -->
+                <ActivityIndicator Grid.Row="1" IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" Color="Green"
                        VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" />
+            </Grid>
+            <!-- Add questions button -->
+            <Button Grid.Row="0" WidthRequest="120"
+                   HeightRequest="120"
+                   Text="Add"
+                    Clicked="AddQuestionsButton_Clicked"
+                   FontSize="Micro"
+                   TextColor="White"
+                   BackgroundColor="DarkBlue"
+                   CornerRadius="60"  />
         </Grid>
     </ContentPage.Content>
 </ContentPage>

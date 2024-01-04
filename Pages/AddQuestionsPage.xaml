@@ -17,12 +17,14 @@
             <Entry x:Name="ChoiceOne" Placeholder="ChoiceOne" />
             <Entry x:Name="ChoiceTwo" Placeholder="ChoiceTwo"/>
             <Entry x:Name="ChoiceThree" Placeholder="ChoiceThree" />
+            <Entry x:Name="ChoiceFour" Placeholder="ChoiceThree" />
             <Picker x:Name="CorrectAnswerPicker" Title="Select Correct Answer">
                 <Picker.ItemsSource>
                     <x:Array Type="{x:Type x:String}">
                         <x:String>ChoiceOne</x:String>
                         <x:String>ChoiceTwo</x:String>
                         <x:String>ChoiceThree</x:String>
+                        <x:String>ChoiceFour</x:String>
                     </x:Array>
                 </Picker.ItemsSource>
             </Picker>
